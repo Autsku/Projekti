@@ -1,6 +1,6 @@
 # Projekti
 
-  
+  Miltä linki voisi näyttää Koodi kansiolle: http://localhost/Projekti/Projekti/Koodi/etu.html
 
 ## Gitin käyttöön otto
 
@@ -21,3 +21,5 @@
 
   Jos jostain syystä ei toimi tai tulee ongelmia tässä on vielä taulu missä näet eri komentoja:
   <img width="1046" height="609" alt="a" src="https://github.com/user-attachments/assets/aa119cbf-9cf7-4ed0-9f6e-1e2d47ffe59f" />
+
+
