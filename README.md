@@ -30,4 +30,4 @@ Käyttäjä tunnukset:
 
   <img width="834" height="680" alt="image" src="https://github.com/user-attachments/assets/42930f9d-bd20-4fa0-ab27-dec940a5acc4" />
 
-dounloudaa SQL file (Projekti/Projekti/SQL/team1.sql) ja importoi se localhostissa uudella team1 käyttäjällä -> saat kursit, opettaja jne listat
+downloudaa SQL file (Projekti/Projekti/SQL/team1.sql) ja importoi se localhostissa uudella team1 käyttäjällä -> saat kursit, opettaja jne listat
