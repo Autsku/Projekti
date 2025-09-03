@@ -1,6 +1,6 @@
 # Projekti
 
-  Miltä linki voisi näyttää Koodi kansiolle: http://localhost/Projekti/Projekti/Koodi/etu.html
+  Miltä linki voisi näyttää Koodi kansiolle: http://localhost/Projekti/Projekti/Koodi/
 
 ## Gitin käyttöön otto
 
@@ -22,4 +22,12 @@
   Jos jostain syystä ei toimi tai tulee ongelmia tässä on vielä taulu missä näet eri komentoja:
   <img width="1046" height="609" alt="a" src="https://github.com/user-attachments/assets/aa119cbf-9cf7-4ed0-9f6e-1e2d47ffe59f" />
 
+## Käyttäjän teko localhostiin
 
+Käyttäjä tunnukset:
+* team1
+* 1234
+
+  <img width="834" height="680" alt="image" src="https://github.com/user-attachments/assets/42930f9d-bd20-4fa0-ab27-dec940a5acc4" />
+
+downloudaa SQL file (Projekti/Projekti/SQL/team1.sql) ja importoi se localhostissa uudella team1 käyttäjällä -> saat kursit, opettaja jne listat
