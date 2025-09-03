@@ -25,8 +25,7 @@
 ## Käyttäjän teko localhostiin
 
 Käyttäjä tunnukset:
-	team1
- 
- 	1234
+* team1
+* 1234
 
   <img width="834" height="680" alt="image" src="https://github.com/user-attachments/assets/42930f9d-bd20-4fa0-ab27-dec940a5acc4" />
