@@ -10,6 +10,13 @@ html, body {
     align-items: center; 
     padding: 15px;
     background-color: rgb(5, 54, 73);
+    border-bottom: 0.3rem solid white;
+    
+}
+
+a:hover {
+  background-color: white;
+  color: rgb(5, 54, 73);
 }
 
 .header .items {
@@ -22,6 +29,8 @@ html, body {
     margin: 0;
     color: white;
     text-decoration: none;
+    font-size: 1.3rem;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .header .logo{
@@ -29,4 +38,8 @@ html, body {
     padding: 0;
     text-align: left;
     color: white;
+    margin-left: 30px;
+    text-decoration: none;
+    font-size: 2.9rem;
+
 }

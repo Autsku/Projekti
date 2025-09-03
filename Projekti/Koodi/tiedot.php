@@ -7,6 +7,15 @@
     <title>Logo</title>
 </head>
 <body>
-    <h3>meow</h3>
+    <div class="header">
+        <a href="index.php" class="logo">Logo</a>
+        <div class="items">
+            <a href="tilat.php">Tilat</a>
+            <a href="kurssit.php">Kurssit</a>
+            <a href="opiskelijat.php">Opiskelijat</a>
+            <a href="opettajat.php">Opettajat</a>
+        </div>
+    </div>
+
 </body>
 </html>
