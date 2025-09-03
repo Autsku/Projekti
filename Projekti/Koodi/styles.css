@@ -2,6 +2,7 @@ html, body {
     margin: 0;
     padding: 0;
     background-color: skyblue;
+    min-height: 150vh;
 }
 
 .header {
@@ -14,25 +15,26 @@ html, body {
     
 }
 
-a:hover {
-  background-color: white;
-  color: rgb(5, 54, 73);
+
+.header a:hover {
+    background-color: white;
+    color: rgb(5, 54, 73);
+    border-radius: 30px;
 }
 
-.header .items {
-    display: flex;
-    gap: 50px; 
-    margin-right: 50px;
+.header a {
+    padding: 10px 15px; 
+    transition: all 0.3s ease;
 }
 
-.header .items a {
+.header a {
     margin: 0;
     color: white;
     text-decoration: none;
     font-size: 1.3rem;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    transition: all 0.3s ease;
 }
-
 .header .logo{
     align-items: center;
     padding: 0;
@@ -41,5 +43,24 @@ a:hover {
     margin-left: 30px;
     text-decoration: none;
     font-size: 2.9rem;
+}
 
+.container {
+  display: flex;
+  justify-content: center;    
+  height: 150px;           
+  background-color: rgb(5, 54, 73);
+  color: white;
+}
+
+.bottom-section {
+  background-color: rgb(5, 54, 73);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  position: absolute;
+  justify-content: space-between; 
+  align-items: center; 
+  padding: 15px;
+  bottom: -50vh;
 }
