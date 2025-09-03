@@ -1,6 +1,6 @@
 # Projekti
 
-  Miltä linki voisi näyttää Koodi kansiolle: http://localhost/Projekti/Projekti/Koodi/etu.html
+  Miltä linki voisi näyttää Koodi kansiolle: http://localhost/Projekti/Projekti/Koodi/
 
 ## Gitin käyttöön otto
 
