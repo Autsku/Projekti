@@ -1,5 +1,32 @@
-.header{
-    margin-top: auto;
-    background-color: aqua;
-    padding: 10px;
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: skyblue;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px;
+    background-color: rgb(5, 54, 73);
+}
+
+.header .items {
+    display: flex;
+    gap: 50px; 
+    margin-right: 50px;
+}
+
+.header .items a {
+    margin: 0;
+    color: white;
+    text-decoration: none;
+}
+
+.header .logo{
+    align-items: center;
+    padding: 0;
+    text-align: left;
+    color: white;
 }

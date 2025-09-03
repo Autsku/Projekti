@@ -8,13 +8,15 @@
 </head>
 <body>
     <div class="header">
-        <h1>Logo</h1>
-
-        <h3>Tiedot</h3>
-        <h3>Tilat</h3>
-        <h3>Kurssit</h3>
-        <h3>Opiskelijat</h3>
-        <h3>Opettajat</h3>
+        <h1 class="logo">Logo</h1>
+        <div class="items">
+            <a href="tiedot.php" target="_blank">Tiedot</a>
+            <a href="tilat.php" target="_blank">Tilat</a>
+            <a href="kurssit.php" target="_blank">Kurssit</a>
+            <a href="opiskelijat.php" target="_blank">Opiskelijat</a>
+            <a href="opettajat.php" target="_blank">Opettajat</a>
+        </div>
     </div>
+
 </body>
 </html>
