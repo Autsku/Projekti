@@ -23,7 +23,9 @@
   <img width="1046" height="609" alt="a" src="https://github.com/user-attachments/assets/aa119cbf-9cf7-4ed0-9f6e-1e2d47ffe59f" />
 
 ## Käyttäjän teko localhostiin
-käyttäjä:
+
+Käyttäjä tunnukset:
 	team1
-	1234
+ 	1234
+
   <img width="834" height="680" alt="image" src="https://github.com/user-attachments/assets/42930f9d-bd20-4fa0-ab27-dec940a5acc4" />
