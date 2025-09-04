@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 04, 2025 at 08:12 AM
+-- Generation Time: Sep 04, 2025 at 09:54 AM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -32,7 +32,7 @@ CREATE TABLE `kurssikirjautuminen` (
   `Tunnus` int(11) NOT NULL,
   `Opiskelija` int(11) NOT NULL,
   `Kurssi` int(11) NOT NULL,
-  `Kirjautumispäivä` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `Kirjautumispaiva` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -45,8 +45,8 @@ CREATE TABLE `kurssit` (
   `Tunnus` int(11) NOT NULL,
   `Nimi` varchar(30) NOT NULL,
   `Kuvaus` text NOT NULL,
-  `Alkupäivä` datetime NOT NULL,
-  `Loppupäivä` datetime NOT NULL,
+  `Alkupaiva` date NOT NULL,
+  `Loppupaiva` date NOT NULL,
   `Opettaja` int(11) NOT NULL,
   `Tila` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -90,8 +90,8 @@ CREATE TABLE `opiskelijat` (
   `Opiskelijanumero` int(11) NOT NULL,
   `Etunimi` varchar(20) NOT NULL,
   `Sukunimi` varchar(20) NOT NULL,
-  `Syntymapaiva` date DEFAULT NULL,
-  `Vuosikurssi` int(11) DEFAULT NULL
+  `Syntymapaiva` date NOT NULL,
+  `Vuosikurssi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
