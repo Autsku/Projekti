@@ -16,7 +16,6 @@
             <a href="tilat.php">Tilat</a>
             <a href="kurssit.php">Kurssit</a>
             <a href="opettajat.php">Opettajat</a>
-            <a href="opiskelijat.php">Opiskelijat</a>
         </div>
     </div>
 

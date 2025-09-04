@@ -34,18 +34,31 @@
                 <thead>
                 
                 <tbody>
-                    <tr>
-                        <td>ID</td>
-                        <td>Etunimi</td>
-                        <td>Sukunimi</td>
-                        <td>Syntymäpäivä</td>
-                        <td>Vuosikurssi</td>
+                    <?php
+                    include("yhteys.php");
 
-                        <td>
-                            <a href='Update'>Update</a>
-                            <a href='Delete'>Delete</a>
-                        </td>
-                    </tr>
+                    $sql = "SELECT * FROM opiskelijat";
+                        $result = $yhteys->query($sql);  
+
+                    if (!$result) {
+                        die("Invalid query: " . $yhteys->error);  
+                    }
+
+                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                        echo"<tr>
+                            <td>" . $row["Opiskelijanumero"] . "</td>
+                            <td>" . $row["Etunimi"] . "</td>
+                            <td>" . $row["Sukunimi"] . "</td>
+                            <td>" . $row["Syntymapaiva"] . "</td>
+                            <td>" . $row["Vuosikurssi"] . "</td>
+
+                            <td>
+                                <a class='btn btn-primary btn-sm' href='update.php?id=" . $row["Opiskelijanumero"] . "'>Update</a>
+                                <a class='btn btn-danger btn-sm' href='delete.php?id=" . $row["Opiskelijanumero"] . "'>Delete</a>                          
+                            </td>
+                        </tr>";
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
@@ -59,24 +72,35 @@
                         <th>ID</th>
                         <th>Etunimi</th>
                         <th>Sukunimi</th>
-                        <th>Syntymäpäivä</th>
-                        <th>Vuosikurssi</th>
+                        <th>Aine</th>
                     </tr>
                 <thead>
                 
                 <tbody>
-                    <tr>
-                        <td>ID</td>
-                        <td>Etunimi</td>
-                        <td>Sukunimi</td>
-                        <td>Syntymäpäivä</td>
-                        <td>Vuosikurssi</td>
+                    <?php
+                    include("yhteys.php");
 
-                        <td>
-                            <a href='Update'>Update</a>
-                            <a href='Delete'>Delete</a>
-                        </td>
-                    </tr>
+                    $sql = "SELECT * FROM opettajat";
+                        $result = $yhteys->query($sql);  
+
+                    if (!$result) {
+                        die("Invalid query: " . $yhteys->error);  
+                    }
+
+                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                        echo"<tr>
+                            <td>" . $row["Tunnusnumero"] . "</td>
+                            <td>" . $row["Etunimi"] . "</td>
+                            <td>" . $row["Sukunimi"] . "</td>
+                            <td>" . $row["Aine"] . "</td>
+
+                            <td>
+                                <a class='btn btn-primary btn-sm' href='update.php?id=" . $row["Tunnusnumero"] . "'>Update</a>
+                                <a class='btn btn-danger btn-sm' href='delete.php?id=" . $row["Tunnusnumero"] . "'>Delete</a>
+                            </td>
+                        </tr>";
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
@@ -88,26 +112,43 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Etunimi</th>
-                        <th>Sukunimi</th>
-                        <th>Syntymäpäivä</th>
-                        <th>Vuosikurssi</th>
+                        <th>Nimi</th>
+                        <th>Kuvaus</th>
+                        <th>Alkupäivä</th>
+                        <th>Loppupäivä</th>
+                        <th>Opettaja</th>
+                        <th>Tila</th>
                     </tr>
                 <thead>
                 
                 <tbody>
-                    <tr>
-                        <td>ID</td>
-                        <td>Etunimi</td>
-                        <td>Sukunimi</td>
-                        <td>Syntymäpäivä</td>
-                        <td>Vuosikurssi</td>
+                    <?php
+                    include("yhteys.php");
 
-                        <td>
-                            <a href='Update'>Update</a>
-                            <a href='Delete'>Delete</a>
-                        </td>
-                    </tr>
+                    $sql = "SELECT * FROM kurssit";
+                        $result = $yhteys->query($sql);  
+
+                    if (!$result) {
+                        die("Invalid query: " . $yhteys->error);  
+                    }
+
+                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                        echo"<tr>
+                            <td>" . $row["Tunnus"] . "</td>
+                            <td>" . $row["Nimi"] . "</td>
+                            <td>" . $row["Kuvaus"] . "</td>
+                            <td>" . $row["Alkupaiva"] . "</td>
+                            <td>" . $row["Loppupaiva"] . "</td>
+                            <td>" . $row["Opettaja"] . "</td>
+                            <td>" . $row["Tila"] . "</td>
+
+                            <td>
+                                <a class='btn btn-primary btn-sm' href='update.php?id=" . $row["Tunnus"] . "'>Update</a>
+                                <a class='btn btn-danger btn-sm' href='delete.php?id=" . $row["Tunnus"] . "'>Delete</a>                      
+                            </td>
+                        </tr>";
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
@@ -119,26 +160,37 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Etunimi</th>
-                        <th>Sukunimi</th>
-                        <th>Syntymäpäivä</th>
-                        <th>Vuosikurssi</th>
+                        <th>Opiskelija</th>
+                        <th>Kurssi</th>
+                        <th>Kirjautumispäivä</th>
                     </tr>
                 <thead>
                 
                 <tbody>
-                    <tr>
-                        <td>ID</td>
-                        <td>Etunimi</td>
-                        <td>Sukunimi</td>
-                        <td>Syntymäpäivä</td>
-                        <td>Vuosikurssi</td>
+                    <?php
+                    include("yhteys.php");
 
-                        <td>
-                            <a href='Update'>Update</a>
-                            <a href='Delete'>Delete</a>
-                        </td>
-                    </tr>
+                    $sql = "SELECT * FROM kurssikirjautuminen";
+                        $result = $yhteys->query($sql);  
+
+                    if (!$result) {
+                        die("Invalid query: " . $yhteys->error);  
+                    }
+
+                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                        echo"<tr>
+                            <td>" . $row["Tunnus"] . "</td>
+                            <td>" . $row["Opiskelija"] . "</td>
+                            <td>" . $row["Kurssi"] . "</td>
+                            <td>" . $row["Kirjautumispaiva"] . "</td>
+
+                            <td>
+                                <a class='btn btn-primary btn-sm' href='update.php?id=" . $row["Tunnus"] . "'>Update</a>
+                                <a class='btn btn-danger btn-sm' href='delete.php?id=" . $row["Tunnus"] . "'>Delete</a>
+                            </td>
+                        </tr>";
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
