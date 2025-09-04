@@ -12,7 +12,6 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -28,6 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `kurssikirjautuminen`
 --
 
+DROP TABLE IF EXISTS `kurssikirjautuminen`;
 CREATE TABLE `kurssikirjautuminen` (
   `Tunnus` int(11) NOT NULL,
   `Opiskelija` int(11) NOT NULL,
@@ -41,6 +41,7 @@ CREATE TABLE `kurssikirjautuminen` (
 -- Table structure for table `kurssit`
 --
 
+DROP TABLE IF EXISTS `kurssit`;
 CREATE TABLE `kurssit` (
   `Tunnus` int(11) NOT NULL,
   `Nimi` varchar(30) NOT NULL,
@@ -57,6 +58,7 @@ CREATE TABLE `kurssit` (
 -- Table structure for table `opettajat`
 --
 
+DROP TABLE IF EXISTS `opettajat`;
 CREATE TABLE `opettajat` (
   `Tunnusnumero` int(11) NOT NULL,
   `Etunimi` varchar(30) NOT NULL,
@@ -86,6 +88,7 @@ INSERT INTO `opettajat` (`Tunnusnumero`, `Etunimi`, `Sukunimi`, `Aine`) VALUES
 -- Table structure for table `opiskelijat`
 --
 
+DROP TABLE IF EXISTS `opiskelijat`;
 CREATE TABLE `opiskelijat` (
   `Opiskelijanumero` int(11) NOT NULL,
   `Etunimi` varchar(20) NOT NULL,
@@ -156,6 +159,7 @@ INSERT INTO `opiskelijat` (`Opiskelijanumero`, `Etunimi`, `Sukunimi`, `Syntymapa
 -- Table structure for table `tilat`
 --
 
+DROP TABLE IF EXISTS `tilat`;
 CREATE TABLE `tilat` (
   `Tunnus` int(11) NOT NULL,
   `Nimi` varchar(30) NOT NULL,
