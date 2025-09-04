@@ -22,6 +22,7 @@
     <div class="box" style="margin: 50px;">
         <div class="oppilaat">
             <h3>Oppilaat</h3>
+            <a class='btn btn-success btn-sm' href='add.php?table=opiskelijat'>Add</a>
             <br>
             <table class="table">
                 <thead>
@@ -54,7 +55,6 @@
                             <td>" . $row["Syntymapaiva"] . "</td>
                             <td>" . $row["Vuosikurssi"] . "</td>
                             <td>
-                                <a class='btn btn-success btn-sm' href='add.php?table=opiskelijat'>Add</a>
                                 <a class='btn btn-primary btn-sm' href='update.php?table=opiskelijat&id=" . $row["Opiskelijanumero"] . "'>Update</a>
                                 <a class='btn btn-danger btn-sm' href='delete.php?table=opiskelijat&id=" . $row["Opiskelijanumero"] . "'>Delete</a>                          
                             </td>
@@ -67,6 +67,8 @@
 
         <div class="opettajat">
             <h3>Opettajat</h3>
+            <a class='btn btn-success btn-sm' href='add.php?table=opettajat'>Add</a>
+
             <br>
             <table class="table">
                 <thead>
@@ -95,7 +97,6 @@
                             <td>" . $row["Sukunimi"] . "</td>
                             <td>" . $row["Aine"] . "</td>
                             <td>
-                                <a class='btn btn-success btn-sm' href='add.php?table=opettajat'>Add</a>
                                 <a class='btn btn-primary btn-sm' href='update.php?table=opettajat&id=" . $row["Tunnusnumero"] . "'>Update</a>
                                 <a class='btn btn-danger btn-sm' href='delete.php?table=opettajat&id=" . $row["Tunnusnumero"] . "'>Delete</a>
                             </td>
@@ -108,6 +109,7 @@
 
         <div class="kurssit">
             <h3>Kurssit</h3>
+            <a class='btn btn-success btn-sm' href='add.php?table=kurssit'>Add</a>
             <br>
             <table class="table">
                 <thead>
@@ -142,7 +144,6 @@
                             <td>" . $row["Opettaja"] . "</td>
                             <td>" . $row["Tila"] . "</td>
                             <td>
-                                <a class='btn btn-success btn-sm' href='add.php?table=kurssit'>Add</a>
                                 <a class='btn btn-primary btn-sm' href='update.php?table=kurssit&id=" . $row["Tunnus"] . "'>Update</a>
                                 <a class='btn btn-danger btn-sm' href='delete.php?table=kurssit&id=" . $row["Tunnus"] . "'>Delete</a>                      
                             </td>
@@ -155,6 +156,7 @@
 
         <div class="kirjautumiset">
             <h3>Kirjautumiset</h3>
+            <a class='btn btn-success btn-sm' href='add.php?table=kurssikirjautuminen'>Add</a>
             <br>
             <table class="table">
                 <thead>
@@ -183,7 +185,6 @@
                             <td>" . $row["Kurssi"] . "</td>
                             <td>" . $row["Kirjautumispaiva"] . "</td>
                             <td>
-                                <a class='btn btn-success btn-sm' href='add.php?table=kurssikirjautuminen'>Add</a>
                                 <a class='btn btn-primary btn-sm' href='update.php?table=kurssikirjautuminen&id=" . $row["Tunnus"] . "'>Update</a>
                                 <a class='btn btn-danger btn-sm' href='delete.php?table=kurssikirjautuminen&id=" . $row["Tunnus"] . "'>Delete</a>
                             </td>
