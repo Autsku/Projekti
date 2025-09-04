@@ -1,14 +1,12 @@
 <?php
 include("yhteys.php");
 
-// Get the student ID from URL
 $id = $_GET['id'] ?? '';
 
 if (empty($id)) {
     die("Opiskelijanumero puuttuu!");
 }
 
-// Handle form submission
 if ($_POST) {
     $etunimi = $_POST['etunimi'];
     $sukunimi = $_POST['sukunimi'];
@@ -27,7 +25,6 @@ if ($_POST) {
     exit;
 }
 
-// Get current student data
 $sql = "SELECT * FROM opiskelijat WHERE Opiskelijanumero = ?";
 $stmt = $yhteys->prepare($sql);
 $stmt->execute([$id]);
