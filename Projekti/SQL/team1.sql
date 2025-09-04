@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 03, 2025 at 01:11 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Sep 04, 2025 at 08:12 AM
+-- Server version: 10.4.6-MariaDB
+-- PHP Version: 7.3.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -32,7 +33,7 @@ CREATE TABLE `kurssikirjautuminen` (
   `Opiskelija` int(11) NOT NULL,
   `Kurssi` int(11) NOT NULL,
   `Kirjautumispäivä` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -48,7 +49,7 @@ CREATE TABLE `kurssit` (
   `Loppupäivä` datetime NOT NULL,
   `Opettaja` int(11) NOT NULL,
   `Tila` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -61,7 +62,7 @@ CREATE TABLE `opettajat` (
   `Etunimi` varchar(30) NOT NULL,
   `Sukunimi` varchar(30) NOT NULL,
   `Aine` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `opettajat`
@@ -89,15 +90,15 @@ CREATE TABLE `opiskelijat` (
   `Opiskelijanumero` int(11) NOT NULL,
   `Etunimi` varchar(20) NOT NULL,
   `Sukunimi` varchar(20) NOT NULL,
-  `Syntymäpäivä` date NOT NULL,
-  `Vuosikurssi` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `Syntymapaiva` date DEFAULT NULL,
+  `Vuosikurssi` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `opiskelijat`
 --
 
-INSERT INTO `opiskelijat` (`Opiskelijanumero`, `Etunimi`, `Sukunimi`, `Syntymäpäivä`, `Vuosikurssi`) VALUES
+INSERT INTO `opiskelijat` (`Opiskelijanumero`, `Etunimi`, `Sukunimi`, `Syntymapaiva`, `Vuosikurssi`) VALUES
 (1001, 'Anna', 'Virtanen', '2003-05-12', 2),
 (1002, 'Pekka', 'Korhonen', '2002-11-30', 3),
 (1003, 'Mikko', 'Nieminen', '2004-03-22', 1),
@@ -159,7 +160,7 @@ CREATE TABLE `tilat` (
   `Tunnus` int(11) NOT NULL,
   `Nimi` varchar(30) NOT NULL,
   `Kapasiteetti` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tilat`

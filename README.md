@@ -13,6 +13,11 @@
   2. Jottei kaikki failit mene sekaisin tai katoa käytä ensin: "git fetch". Se lataa muiden työntämää uutta dataa ilman vanhojen muokkaamista.
      Tottakai, jos näitä et halua vertailla tai perestyä sen kummemmin niin käytä: "git pull".
 
+     
+git add .
+git commit -m "Your commit message here"
+git push
+
 ## Gitin työntö
   1. Varmista että olet valinnut folderin jonka/tiedoston, jonka haluat gittiin työntää.
   2. Kun olet taas cmd oikeassa folderissa kirjoita: "git add ."
