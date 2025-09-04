@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 04, 2025 at 09:54 AM
+-- Generation Time: Sep 04, 2025 at 12:53 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -11,6 +11,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,7 +28,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `kurssikirjautuminen`
 --
 
-DROP TABLE IF EXISTS `kurssikirjautuminen`;
 CREATE TABLE `kurssikirjautuminen` (
   `Tunnus` int(11) NOT NULL,
   `Opiskelija` int(11) NOT NULL,
@@ -35,13 +35,38 @@ CREATE TABLE `kurssikirjautuminen` (
   `Kirjautumispaiva` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `kurssikirjautuminen`
+--
+
+INSERT INTO `kurssikirjautuminen` (`Tunnus`, `Opiskelija`, `Kurssi`, `Kirjautumispaiva`) VALUES
+(21, 1, 1, '2025-01-15'),
+(22, 2, 1, '2025-01-16'),
+(23, 3, 2, '2025-02-10'),
+(24, 4, 2, '2025-02-11'),
+(25, 5, 3, '2025-03-10'),
+(26, 6, 1, '2025-01-20'),
+(27, 7, 3, '2025-03-12'),
+(28, 8, 2, '2025-02-15'),
+(29, 9, 1, '2025-01-22'),
+(30, 10, 3, '2025-03-18'),
+(31, 11, 2, '2025-02-20'),
+(32, 12, 1, '2025-01-25'),
+(33, 13, 3, '2025-03-22'),
+(34, 14, 2, '2025-02-25'),
+(35, 15, 1, '2025-01-30'),
+(36, 16, 4, '2025-04-05'),
+(37, 17, 5, '2025-05-10'),
+(38, 18, 6, '2025-03-20'),
+(39, 19, 7, '2025-02-25'),
+(40, 20, 8, '2025-03-05');
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `kurssit`
 --
 
-DROP TABLE IF EXISTS `kurssit`;
 CREATE TABLE `kurssit` (
   `Tunnus` int(11) NOT NULL,
   `Nimi` varchar(30) NOT NULL,
@@ -52,13 +77,26 @@ CREATE TABLE `kurssit` (
   `Tila` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `kurssit`
+--
+
+INSERT INTO `kurssit` (`Tunnus`, `Nimi`, `Kuvaus`, `Alkupaiva`, `Loppupaiva`, `Opettaja`, `Tila`) VALUES
+(1, 'Matematiikka 1', 'Perus matematiikkaa', '2025-01-10', '2025-05-30', 1, 1),
+(2, 'Fysiikka 1', 'Perus fysiikkaa', '2025-02-01', '2025-06-15', 2, 2),
+(3, 'Historia 1', 'Suomen historiaa', '2025-03-05', '2025-07-01', 3, 3),
+(4, 'Englanti 1', 'Perus englannin kurssi', '2025-04-01', '2025-08-15', 4, 4),
+(5, 'Kemia 1', 'Perus kemian kurssi', '2025-05-01', '2025-09-01', 5, 5),
+(6, 'Äidinkieli 1', 'Suomen kieli ja kirjallisuus', '2025-03-15', '2025-07-15', 6, 6),
+(7, 'Uskonto 1', 'Uskonnon perusteet', '2025-02-20', '2025-06-20', 7, 7),
+(8, 'Liikunta 1', 'Liikunnan perusteet', '2025-03-01', '2025-07-01', 9, 8);
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `opettajat`
 --
 
-DROP TABLE IF EXISTS `opettajat`;
 CREATE TABLE `opettajat` (
   `Tunnusnumero` int(11) NOT NULL,
   `Etunimi` varchar(30) NOT NULL,
@@ -88,7 +126,6 @@ INSERT INTO `opettajat` (`Tunnusnumero`, `Etunimi`, `Sukunimi`, `Aine`) VALUES
 -- Table structure for table `opiskelijat`
 --
 
-DROP TABLE IF EXISTS `opiskelijat`;
 CREATE TABLE `opiskelijat` (
   `Opiskelijanumero` int(11) NOT NULL,
   `Etunimi` varchar(20) NOT NULL,
@@ -159,7 +196,6 @@ INSERT INTO `opiskelijat` (`Opiskelijanumero`, `Etunimi`, `Sukunimi`, `Syntymapa
 -- Table structure for table `tilat`
 --
 
-DROP TABLE IF EXISTS `tilat`;
 CREATE TABLE `tilat` (
   `Tunnus` int(11) NOT NULL,
   `Nimi` varchar(30) NOT NULL,
@@ -228,13 +264,13 @@ ALTER TABLE `tilat`
 -- AUTO_INCREMENT for table `kurssikirjautuminen`
 --
 ALTER TABLE `kurssikirjautuminen`
-  MODIFY `Tunnus` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Tunnus` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `kurssit`
 --
 ALTER TABLE `kurssit`
-  MODIFY `Tunnus` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Tunnus` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `opettajat`

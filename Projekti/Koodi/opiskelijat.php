@@ -1,11 +1,11 @@
 <?php include 'yhteys.php'; ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
 <head>
     <link rel="stylesheet" href="styles.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Opiskelijat</title>
 </head>
 <body>
@@ -28,19 +28,36 @@
                 <th>Nimi</th>
                 <th>Syntymäpäivä</th>
                 <th>Vuosikurssi</th>
+                <th>Kurssit</th>
+                <th>Aloituspäivä</th>
             </tr>
 
             <?php
-            $sql = "SELECT * FROM Opiskelijat";
+            $sql = "
+                SELECT 
+                    o.Opiskelijanumero,
+                    CONCAT(o.Etunimi, ' ', o.Sukunimi) AS Nimi,
+                    o.Syntymapaiva,
+                    o.Vuosikurssi,
+                    GROUP_CONCAT(k.Nimi SEPARATOR ', ') AS Kurssit,
+                    MIN(kk.Kirjautumispaiva) AS Aloituspaiva
+                FROM opiskelijat o
+                LEFT JOIN kurssikirjautuminen kk ON o.Opiskelijanumero = kk.Opiskelija
+                LEFT JOIN kurssit k ON kk.Kurssi = k.Tunnus
+                GROUP BY o.Opiskelijanumero
+                ORDER BY o.Opiskelijanumero
+            ";
             $stmt = $yhteys->query($sql);
             $opiskelijat = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             foreach ($opiskelijat as $op) {
                 echo "<tr>";
                 echo "<td>" . htmlspecialchars($op['Opiskelijanumero']) . "</td>";
-                echo "<td>" . htmlspecialchars($op['Etunimi']) . " " . htmlspecialchars($op['Sukunimi']) . "</td>";
+                echo "<td>" . htmlspecialchars($op['Nimi']) . "</td>";
                 echo "<td>" . htmlspecialchars($op['Syntymapaiva']) . "</td>";
                 echo "<td>" . htmlspecialchars($op['Vuosikurssi']) . "</td>";
+                echo "<td>" . htmlspecialchars($op['Kurssit'] ?? '') . "</td>";
+                echo "<td>" . htmlspecialchars($op['Aloituspaiva'] ?? '') . "</td>";
                 echo "</tr>";
             }
             ?>
