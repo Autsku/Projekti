@@ -1,14 +1,12 @@
 <?php
 include("yhteys.php");
 
-// Get the student ID from URL
 $id = $_GET['id'] ?? '';
 
 if (empty($id)) {
     die("Opiskelijanumero puuttuu!");
 }
 
-// Handle deletion confirmation
 if (isset($_POST['confirm_delete'])) {
     $sql = "DELETE FROM opiskelijat WHERE Opiskelijanumero = ?";
     $stmt = $yhteys->prepare($sql);
@@ -22,7 +20,6 @@ if (isset($_POST['confirm_delete'])) {
     exit;
 }
 
-// Get student data to show before deletion
 $sql = "SELECT * FROM opiskelijat WHERE Opiskelijanumero = ?";
 $stmt = $yhteys->prepare($sql);
 $stmt->execute([$id]);
