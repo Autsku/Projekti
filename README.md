@@ -22,6 +22,15 @@
   Jos jostain syystä ei toimi tai tulee ongelmia tässä on vielä taulu missä näet eri komentoja:
   <img width="1046" height="609" alt="a" src="https://github.com/user-attachments/assets/aa119cbf-9cf7-4ed0-9f6e-1e2d47ffe59f" />
 
+
+## Vaihda XAMPP Cookie
+
+C:\xampp\phpMyAdmin-kansion config.inc.php
+
+Seuraavalla määrityksellä ('config') pääset kirjautumaan PhpMyAdmin-järjestelmään root-tunnuksella ja siis täysin oikeuksin:
+
+Jos muutat config-sanan cookie-sanaksi, PhpMyAdmin-järjestelmään kirjaudutaan olemassa olevalla käyttäjätunnuksella ja salasanalla
+
 ## Käyttäjän teko localhostiin
 
 Käyttäjä tunnukset:
