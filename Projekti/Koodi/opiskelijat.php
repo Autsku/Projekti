@@ -24,7 +24,7 @@
 
         <table border="1" cellpadding="10">
             <tr>
-                <th>Opiskelijanumero</th>
+                <th>OpiskelijaID</th>
                 <th>Nimi</th>
                 <th>Syntymäpäivä</th>
                 <th>Vuosikurssi</th>
