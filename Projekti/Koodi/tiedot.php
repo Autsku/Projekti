@@ -53,6 +53,7 @@
                             <td>" . $row["Vuosikurssi"] . "</td>
 
                             <td>
+                                <a class='btn btn-success btn-sm' href='add.php'>Add</a>
                                 <a class='btn btn-primary btn-sm' href='update.php?id=" . $row["Opiskelijanumero"] . "'>Update</a>
                                 <a class='btn btn-danger btn-sm' href='delete.php?id=" . $row["Opiskelijanumero"] . "'>Delete</a>                          
                             </td>
