@@ -10,6 +10,7 @@
     <div class="header">
         <a href="index.php" class="logo">Logo</a>
         <div class="items">
+            <a href="tiedot.php">Tiedot</a>
             <a href="tilat.php">Tilat</a>
             <a href="kurssit.php">Kurssit</a>
             <a href="opiskelijat.php">Opiskelijat</a>

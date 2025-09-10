@@ -22,6 +22,7 @@ $opettajat = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <a href="tilat.php">Tilat</a>
             <a href="kurssit.php">Kurssit</a>
             <a href="opiskelijat.php">Opiskelijat</a>
+            <a href="opettajat.php">Opettajat</a>
         </div>
     </div>
 
