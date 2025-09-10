@@ -718,26 +718,26 @@ INSERT INTO `kurssit` (`Tunnus`, `Nimi`, `Kuvaus`, `Alkupaiva`, `Loppupaiva`, `O
 (2, 'Pitkä Matematiikka', 'Edistynyt matematiikka', '2025-06-01', '2025-09-30', 8, 2),
 
 (3, 'Fysiikka', 'Perus fysiikkaa', '2025-02-01', '2025-06-15', 2, 3),
-(4, 'Kvanttifysiikka', 'Fysiikan jatkokurssi', '2025-07-01', '2025-10-15', 2, 4),
+(4, 'Kvanttifysiikka', 'Fysiikan jatkokurssi', '2025-07-01', '2025-10-15', 2, 17),
 
 (5, 'Historia', 'Suomen historiaa', '2025-03-05', '2025-07-01', 3, 5),
 (6, 'Maailman historia', 'Historiaa maailman laajuisesti', '2025-08-01', '2025-12-01', 3, 6),
 
 (7, 'Englanti', 'Perus englannin kurssi', '2025-04-01', '2025-08-15', 4, 7),
-(8, 'Englannin kieli ja kirjallisuus', 'Edistynyt englanti', '2025-09-01', '2025-12-15', 4, 8),
+(8, 'Englannin kieli ja kirjallisuus', 'Edistynyt englanti', '2025-09-01', '2025-12-15', 4, 20),
 
 (9, 'Kemia', 'Perus kemian kurssi', '2025-05-01', '2025-09-01', 5, 9),
 (10, 'Orgaaninen kemia', 'Kemian jatkokurssi', '2025-09-10', '2026-01-15', 5, 11),
 
-(11, 'Äidinkieli', 'Suomen kieli ja kirjallisuus', '2025-03-15', '2025-07-15', 6, 12),
-(12, 'Kirjallisuus', 'Suomalainen kirjallisuus', '2025-08-01', '2025-11-30', 6, 13),
+(11, 'Äidinkieli', 'Suomen kieli ja kirjallisuus', '2025-03-15', '2025-07-15', 6, 17),
+(12, 'Kirjallisuus', 'Suomalainen kirjallisuus', '2025-08-01', '2025-11-30', 6, 17),
 
-(13, 'Uskonto', 'Uskonnon perusteet', '2025-02-20', '2025-06-20', 7, 14),
-(14, 'Etiikka', 'Etiikan perusteet', '2025-07-01', '2025-10-01', 7, 15),
+(13, 'Uskonto', 'Uskonnon perusteet', '2025-02-20', '2025-06-20', 7, 16),
+(14, 'Etiikka', 'Etiikan perusteet', '2025-07-01', '2025-10-01', 7, 16),
 
 (15, 'Liikunta', 'Liikunnan perusteet', '2025-03-01', '2025-07-01', 9, 10),
 
-(16, 'Kuvataide', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 16),
+(16, 'Kuvataide', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 19),
 (17, 'Käsityöt', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 19),
 
 (18, 'Tietojenkäsittelyn perusteet', 'Perusteet tietojenkäsittelystä', '2025-01-15', '2025-06-01', 1, 17),
@@ -975,19 +975,14 @@ INSERT INTO `tilat` (`Tunnus`, `Nimi`, `Kapasiteetti`) VALUES
 (5, 'Luokka H101', 25),
 (6, 'Luokka A209', 25),
 (7, 'Luokka A224', 25),
-(8, 'Luokka A241', 25),
-(9, 'Luokka A338', 20),
+(8, 'Luokka D100', 40),
+(9, 'Luokka A338', 30),
 (10, 'Liikuntasali', 60),
 (11, 'Luokka A238', 30),
-(12, 'Luokka A201', 30),
-(13, 'Luokka A202', 30),
-(14, 'Luokka A108', 30),
-(15, 'Luokka A105', 30),
-(16, 'Luokka B101', 40),
-(17, 'Luokka B102', 30),
-(18, 'Luokka C200', 30),
-(19, 'Luokka C201', 40),
-(20, 'Luokka D100', 40);
+(12, 'Luokka B101', 40),
+(13, 'Luokka B102', 40),
+(14, 'Luokka C200', 40),
+(15, 'Luokka C201', 40);
 
 --
 -- Indexes for dumped tables
