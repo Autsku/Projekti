@@ -715,7 +715,7 @@ CREATE TABLE `kurssit` (
 
 INSERT INTO `kurssit` (`Tunnus`, `Nimi`, `Kuvaus`, `Alkupaiva`, `Loppupaiva`, `Opettaja`, `Tila`) VALUES
 (1, 'Matematiikka', 'Perus matematiikkaa', '2025-01-10', '2025-05-30', 1, 1),
-(2, 'Pitkä Matematiikka', 'Edistynyt matematiikka', '2025-06-01', '2025-09-30', 1, 2),
+(2, 'Pitkä Matematiikka', 'Edistynyt matematiikka', '2025-06-01', '2025-09-30', 8, 2),
 
 (3, 'Fysiikka', 'Perus fysiikkaa', '2025-02-01', '2025-06-15', 2, 3),
 (4, 'Kvanttifysiikka', 'Fysiikan jatkokurssi', '2025-07-01', '2025-10-15', 2, 4),
@@ -727,23 +727,23 @@ INSERT INTO `kurssit` (`Tunnus`, `Nimi`, `Kuvaus`, `Alkupaiva`, `Loppupaiva`, `O
 (8, 'Englannin kieli ja kirjallisuus', 'Edistynyt englanti', '2025-09-01', '2025-12-15', 4, 8),
 
 (9, 'Kemia', 'Perus kemian kurssi', '2025-05-01', '2025-09-01', 5, 9),
-(10, 'Orgaaninen kemia', 'Kemian jatkokurssi', '2025-09-10', '2026-01-15', 5, 1),
+(10, 'Orgaaninen kemia', 'Kemian jatkokurssi', '2025-09-10', '2026-01-15', 5, 11),
 
-(11, 'Äidinkieli', 'Suomen kieli ja kirjallisuus', '2025-03-15', '2025-07-15', 6, 2),
-(12, 'Kirjallisuus', 'Suomalainen kirjallisuus', '2025-08-01', '2025-11-30', 6, 3),
+(11, 'Äidinkieli', 'Suomen kieli ja kirjallisuus', '2025-03-15', '2025-07-15', 6, 12),
+(12, 'Kirjallisuus', 'Suomalainen kirjallisuus', '2025-08-01', '2025-11-30', 6, 13),
 
-(13, 'Uskonto', 'Uskonnon perusteet', '2025-02-20', '2025-06-20', 7, 4),
-(14, 'Etiikka', 'Etiikan perusteet', '2025-07-01', '2025-10-01', 7, 5),
+(13, 'Uskonto', 'Uskonnon perusteet', '2025-02-20', '2025-06-20', 7, 14),
+(14, 'Etiikka', 'Etiikan perusteet', '2025-07-01', '2025-10-01', 7, 15),
 
-(15, 'Liikunta', 'Liikunnan perusteet', '2025-03-01', '2025-07-01', 9, 6),
+(15, 'Liikunta', 'Liikunnan perusteet', '2025-03-01', '2025-07-01', 9, 10),
 
-(16, 'Kuvataide', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 7),
-(17, 'Käsityöt', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 7),
+(16, 'Kuvataide', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 16),
+(17, 'Käsityöt', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 19),
 
-(18, 'Tietojenkäsittelyn perusteet', 'Perusteet tietojenkäsittelystä', '2025-01-15', '2025-06-01', 1, 10),
-(19, 'Ohjelmoinnin perusteet', 'Python-ohjelmoinnin alkeet', '2025-02-01', '2025-06-30', 1, 11),
+(18, 'Tietojenkäsittelyn perusteet', 'Perusteet tietojenkäsittelystä', '2025-01-15', '2025-06-01', 1, 17),
+(19, 'Ohjelmoinnin perusteet', 'Python-ohjelmoinnin alkeet', '2025-02-01', '2025-06-30', 1, 18),
 
-(20, 'Verkko- ja tietoturva', 'Tietoverkkojen turvallisuus', '2025-03-01', '2025-07-15', 9, 12);
+(20, 'Verkko- ja tietoturva', 'Tietoverkkojen turvallisuus', '2025-03-01', '2025-07-15', 9, 20);
 
 
 -- --------------------------------------------------------
@@ -977,7 +977,7 @@ INSERT INTO `tilat` (`Tunnus`, `Nimi`, `Kapasiteetti`) VALUES
 (7, 'Luokka A224', 25),
 (8, 'Luokka A241', 25),
 (9, 'Luokka A338', 20),
-(10, 'Auditorio', 60),
+(10, 'Liikuntasali', 60),
 (11, 'Luokka A238', 30),
 (12, 'Luokka A201', 30),
 (13, 'Luokka A202', 30),
