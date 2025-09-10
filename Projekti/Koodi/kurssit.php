@@ -1,7 +1,6 @@
 <?php
 include 'yhteys.php';
 
-// Haetaan kaikki kurssit, opettaja ja tila
 $sql = "SELECT k.Tunnus, k.Nimi, k.Kuvaus, k.Alkupaiva, k.Loppupaiva,
                o.Etunimi, o.Sukunimi,
                t.Nimi AS tila_nimi
@@ -47,7 +46,6 @@ $kurssit = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <h3>Ilmoittautuneet opiskelijat</h3>
 
                 <?php
-                // Haetaan kunkin kurssin opiskelijat
                 $sql2 = "SELECT o.Etunimi, o.Sukunimi, o.Vuosikurssi
                          FROM kurssikirjautuminen kk
                          JOIN opiskelijat o ON kk.Opiskelija = o.Opiskelijanumero

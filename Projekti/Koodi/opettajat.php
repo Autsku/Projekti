@@ -1,7 +1,6 @@
 <?php
 include 'yhteys.php';
 
-// Haetaan kaikki opettajat
 $sql = "SELECT Tunnusnumero, Etunimi, Sukunimi, Aine FROM opettajat ORDER BY Sukunimi, Etunimi";
 $stmt = $yhteys->query($sql);
 $opettajat = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -35,7 +34,6 @@ $opettajat = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <p><strong>Aine:</strong> <?= htmlspecialchars($opettaja['Aine']) ?></p>
 
                 <?php
-                // Haetaan kaikki kurssit tälle opettajalle
                 $sql2 = "SELECT k.Nimi, k.Alkupaiva, k.Loppupaiva, t.Nimi AS tila_nimi
                          FROM kurssit k
                          LEFT JOIN tilat t ON k.Tila = t.Tunnus
