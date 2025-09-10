@@ -238,13 +238,36 @@ CREATE TABLE `kurssit` (
 
 INSERT INTO `kurssit` (`Tunnus`, `Nimi`, `Kuvaus`, `Alkupaiva`, `Loppupaiva`, `Opettaja`, `Tila`) VALUES
 (1, 'Matematiikka', 'Perus matematiikkaa', '2025-01-10', '2025-05-30', 1, 1),
-(2, 'Fysiikka ', 'Perus fysiikkaa', '2025-02-01', '2025-06-15', 2, 2),
-(3, 'Historia ', 'Suomen historiaa', '2025-03-05', '2025-07-01', 3, 3),
-(4, 'Englanti ', 'Perus englannin kurssi', '2025-04-01', '2025-08-15', 4, 4),
-(5, 'Kemia ', 'Perus kemian kurssi', '2025-05-01', '2025-09-01', 5, 5),
-(6, 'Äidinkieli ', 'Suomen kieli ja kirjallisuus', '2025-03-15', '2025-07-15', 6, 6),
-(7, 'Uskonto ', 'Uskonnon perusteet', '2025-02-20', '2025-06-20', 7, 7),
-(8, 'Liikunta ', 'Liikunnan perusteet', '2025-03-01', '2025-07-01', 9, 8);
+(2, 'Pitkä Matematiikka', 'Edistynyt matematiikka', '2025-06-01', '2025-09-30', 1, 2),
+
+(3, 'Fysiikka', 'Perus fysiikkaa', '2025-02-01', '2025-06-15', 2, 3),
+(4, 'Kvanttifysiikka', 'Fysiikan jatkokurssi', '2025-07-01', '2025-10-15', 2, 4),
+
+(5, 'Historia', 'Suomen historiaa', '2025-03-05', '2025-07-01', 3, 5),
+(6, 'Maailman historia', 'Historiaa maailman laajuisesti', '2025-08-01', '2025-12-01', 3, 6),
+
+(7, 'Englanti', 'Perus englannin kurssi', '2025-04-01', '2025-08-15', 4, 7),
+(8, 'Englannin kieli ja kirjallisuus', 'Edistynyt englanti', '2025-09-01', '2025-12-15', 4, 8),
+
+(9, 'Kemia', 'Perus kemian kurssi', '2025-05-01', '2025-09-01', 5, 9),
+(10, 'Orgaaninen kemia', 'Kemian jatkokurssi', '2025-09-10', '2026-01-15', 5, 1),
+
+(11, 'Äidinkieli', 'Suomen kieli ja kirjallisuus', '2025-03-15', '2025-07-15', 6, 2),
+(12, 'Kirjallisuus', 'Suomalainen kirjallisuus', '2025-08-01', '2025-11-30', 6, 3),
+
+(13, 'Uskonto', 'Uskonnon perusteet', '2025-02-20', '2025-06-20', 7, 4),
+(14, 'Etiikka', 'Etiikan perusteet', '2025-07-01', '2025-10-01', 7, 5),
+
+(15, 'Liikunta', 'Liikunnan perusteet', '2025-03-01', '2025-07-01', 9, 6),
+
+(16, 'Kuvataide', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 7),
+(17, 'Käsityöt', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 7),
+
+(18, 'Tietojenkäsittelyn perusteet', 'Perusteet tietojenkäsittelystä', '2025-01-15', '2025-06-01', 1, 10),
+(19, 'Ohjelmoinnin perusteet', 'Python-ohjelmoinnin alkeet', '2025-02-01', '2025-06-30', 1, 11),
+
+(20, 'Verkko- ja tietoturva', 'Tietoverkkojen turvallisuus', '2025-03-01', '2025-07-15', 9, 12);
+
 
 -- --------------------------------------------------------
 
@@ -266,7 +289,7 @@ CREATE TABLE `opettajat` (
 --
 
 INSERT INTO `opettajat` (`Tunnusnumero`, `Etunimi`, `Sukunimi`, `Aine`) VALUES
-(1, 'Tommi', 'Mäkeläinen', 'Matematiikka'),
+(1, 'Tommi', 'Mäkeläinen', 'Matematiikka, Tietojenkäsittely, Ohjelmointi'),
 (2, 'Jaakko', 'Siltanen', 'Fysiikka'),
 (3, 'Tiia', 'Savu', 'Historia'),
 (4, 'Matti', 'Vuori', 'Englanti'),
@@ -274,8 +297,8 @@ INSERT INTO `opettajat` (`Tunnusnumero`, `Etunimi`, `Sukunimi`, `Aine`) VALUES
 (6, 'Tuomas', 'Lohi', 'Äidinkieli'),
 (7, 'Eemeli', 'Käpy', 'Uskonto'),
 (8, 'Janette', 'Tamminen', 'Matematiikka'),
-(9, 'Roope', 'Tapiola', 'Liikunta'),
-(10, 'Eerika', 'Lahti', 'Äidinkieli');
+(9, 'Roope', 'Tapiola', 'Liikunta, Tietoturva'),
+(10, 'Eerika', 'Lahti', 'Kuvataide, Käsityöt');
 
 -- --------------------------------------------------------
 
@@ -368,16 +391,21 @@ CREATE TABLE `tilat` (
 --
 
 INSERT INTO `tilat` (`Tunnus`, `Nimi`, `Kapasiteetti`) VALUES
-(1, 'Luokka C100', 25),
-(2, 'Luokka A301', 25),
-(3, 'Luokka A302', 25),
+(1, 'Luokka C100', 20),
+(2, 'Luokka A301', 20),
+(3, 'Luokka A302', 20),
 (4, 'Luokka H100', 15),
 (5, 'Luokka H101', 15),
-(6, 'Luokka A209', 30),
-(7, 'Luokka A224', 30),
-(8, 'Luokka A241', 20),
-(9, 'Luokka A338', 25),
-(10, 'Auditorio', 60);
+(6, 'Luokka A209', 15),
+(7, 'Luokka A224', 15),
+(8, 'Luokka A241', 15),
+(9, 'Luokka A338', 20),
+(10, 'Auditorio', 60),
+(11, 'Luokka A238', 10),
+(12, 'Luokka A201', 10),
+(13, 'Luokka A202', 10),
+(14, 'Luokka A108', 10),
+(15, 'Luokka A105', 10);
 
 --
 -- Indexes for dumped tables
