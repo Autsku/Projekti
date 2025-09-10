@@ -18,9 +18,11 @@
     </div>
 
     <div class="content">
-        <h2 onclick="a()">Oppilaat</h2>
+        <div class="top">
+            <h1 onclick="a()">Oppilaat</h1>
+            <a class='button' href='add.php?table=opiskelijat'>Add</a>
+        </div>
         <div class="oppilaat" id="oppilaat">
-            <a class='btn btn-success btn-sm' href='add.php?table=opiskelijat'>Add</a>
             <br>
             <table border="1" cellpadding="10">
                 <thead>
@@ -53,8 +55,8 @@
                             <td>" . $row["Syntymapaiva"] . "</td>
                             <td>" . $row["Vuosikurssi"] . "</td>
                             <td>
-                                <a class='btn btn-primary btn-sm' href='update.php?table=opiskelijat&id=" . $row["Opiskelijanumero"] . "'>Update</a>
-                                <a class='btn btn-danger btn-sm' href='delete.php?table=opiskelijat&id=" . $row["Opiskelijanumero"] . "'>Delete</a>                          
+                                <a class='button' href='update.php?table=opiskelijat&id=" . $row["Opiskelijanumero"] . "'>Update</a>
+                                <a class='button' href='delete.php?table=opiskelijat&id=" . $row["Opiskelijanumero"] . "'>Delete</a>                          
                             </td>
                         </tr>";
                     }
@@ -63,9 +65,11 @@
             </table>
         </div>
 
-        <h2 onclick="b()">Opettajat</h2>
+        <div class="top">
+            <h1 onclick="b()">Opettajat</h1>
+            <a class='button' href='add.php?table=opettajat'>Add</a>
+        </div>
         <div class="opettajat" id="opettajat">
-            <a class='btn btn-success btn-sm' href='add.php?table=opettajat'>Add</a>
 
             <br>
             <table border="1" cellpadding="10">
@@ -95,8 +99,8 @@
                             <td>" . $row["Sukunimi"] . "</td>
                             <td>" . $row["Aine"] . "</td>
                             <td>
-                                <a class='btn btn-primary btn-sm' href='update.php?table=opettajat&id=" . $row["Tunnusnumero"] . "'>Update</a>
-                                <a class='btn btn-danger btn-sm' href='delete.php?table=opettajat&id=" . $row["Tunnusnumero"] . "'>Delete</a>
+                                <a class='button' href='update.php?table=opettajat&id=" . $row["Tunnusnumero"] . "'>Update</a>
+                                <a class='button' href='delete.php?table=opettajat&id=" . $row["Tunnusnumero"] . "'>Delete</a>
                             </td>
                         </tr>";
                     }
@@ -105,9 +109,11 @@
             </table>
         </div>
 
-        <h2 onclick="c()">Kurssit</h2>
+        <div class="top">
+            <h1 onclick="c()">Kurssit</h1>
+            <a class='button' href='add.php?table=kurssit'>Add</a>
+        </div>
         <div class="kurssit" id="kurssit">
-            <a class='btn btn-success btn-sm' href='add.php?table=kurssit'>Add</a>
             <br>
             <table border="1" cellpadding="10">
                 <thead>
@@ -142,8 +148,8 @@
                             <td>" . $row["Opettaja"] . "</td>
                             <td>" . $row["Tila"] . "</td>
                             <td>
-                                <a class='btn btn-primary btn-sm' href='update.php?table=kurssit&id=" . $row["Tunnus"] . "'>Update</a>
-                                <a class='btn btn-danger btn-sm' href='delete.php?table=kurssit&id=" . $row["Tunnus"] . "'>Delete</a>                      
+                                <a class='button' href='update.php?table=kurssit&id=" . $row["Tunnus"] . "'>Update</a>
+                                <a class='button' href='delete.php?table=kurssit&id=" . $row["Tunnus"] . "'>Delete</a>                      
                             </td>
                         </tr>";
                     }
@@ -152,9 +158,11 @@
             </table>
         </div>
 
-        <h2 onclick="d()">Kirjautumiset</h2>
+        <div class="top">
+            <h1 onclick="d()">Kirjautumiset</h1>
+            <a class='button' href='add.php?table=kurssikirjautuminen'>Add</a>
+        </div>
         <div class="kirjautumiset" id="kirjautumiset">
-            <a class='btn btn-success btn-sm' href='add.php?table=kurssikirjautuminen'>Add</a>
             <br>
             <table border="1" cellpadding="10">
                 <thead>
@@ -183,8 +191,8 @@
                             <td>" . $row["Kurssi"] . "</td>
                             <td>" . $row["Kirjautumispaiva"] . "</td>
                             <td>
-                                <a class='btn btn-primary btn-sm' href='update.php?table=kurssikirjautuminen&id=" . $row["Tunnus"] . "'>Update</a>
-                                <a class='btn btn-danger btn-sm' href='delete.php?table=kurssikirjautuminen&id=" . $row["Tunnus"] . "'>Delete</a>
+                                <a class='button' href='update.php?table=kurssikirjautuminen&id=" . $row["Tunnus"] . "'>Update</a>
+                                <a class='button' href='delete.php?table=kurssikirjautuminen&id=" . $row["Tunnus"] . "'>Delete</a>
                             </td>
                         </tr>";
                     }

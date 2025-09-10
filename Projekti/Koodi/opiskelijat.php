@@ -19,8 +19,8 @@
         </div>
     </div>
 
-    <h2>Opiskelijat</h2>
     <div class="content">
+        <h1>Opiskelijat</h1>
         <table border="1" cellpadding="10">
             <tr>
                 <th>OpiskelijaID</th>

@@ -229,7 +229,7 @@ $titles = [
         Lisää <?= str_replace(['opiskelijat', 'opettajat', 'kurssit', 'kurssikirjautuminen'], 
                              ['opiskelija', 'opettaja', 'kurssi', 'kirjautuminen'], $table) ?>
     </button>
-    <a href="index.php" class="btn btn-secondary">Peruuta</a>
+    <a href="tiedot.php" class="btn btn-secondary">Peruuta</a>
 </form>
 <?php endif; ?>
 </body>

@@ -18,12 +18,10 @@
         </div>
     </div>
 
-    <div class="bottom-section">
-        <div class="content">
-        <!-- your main page content -->
+        <div class="contentf">
             <p>Some content...</p>
         </div>
-    </div>
+
 
 </body>
 </html>

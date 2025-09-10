@@ -1,10 +1,10 @@
 html, body {
     margin: 0;
     padding: 0;
-    background-color: skyblue;
     width: 100%;
     display: flex;
     flex-direction: column;
+    background-color: rgb(5, 54, 73);
 }
 
 .header {
@@ -49,8 +49,8 @@ html, body {
 .container {
     padding: 20px;
     align-items: center;
-    color: white;
-    background-color: rgb(5, 54, 73);
+    color: rgb(5, 54, 73);
+    background-color: white;
     border-radius: 35px;
-    border: 0.3rem solid white;
+    margin-top: 5%;
 }
