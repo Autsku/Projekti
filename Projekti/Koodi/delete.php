@@ -36,35 +36,40 @@ if (!$student) {
     <meta charset="UTF-8">
     <title>Poista opiskelija</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles1.css">
 </head>
 <body>
-<div class="container mt-5">
-    <h2>Poista opiskelija</h2>
-    
-    <div class="alert alert-warning">
-        <h4>Oletko varma että haluat poistaa tämän opiskelijan?</h4>
-        <p>Tämä toiminto ei ole peruutettavissa!</p>
+
+    <div class="header">
+        <a href="index.php" class="logo">Logo</a>
     </div>
-    
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Opiskelijan tiedot:</h5>
-            <p><strong>Opiskelijanumero:</strong> <?= htmlspecialchars($student['Opiskelijanumero']) ?></p>
-            <p><strong>Nimi:</strong> <?= htmlspecialchars($student['Etunimi']) ?> <?= htmlspecialchars($student['Sukunimi']) ?></p>
-            <p><strong>Syntymäpäivä:</strong> <?= htmlspecialchars($student['Syntymapaiva']) ?></p>
-            <p><strong>Vuosikurssi:</strong> <?= htmlspecialchars($student['Vuosikurssi']) ?></p>
+
+    <div class="container">
+        <h2>Poista opiskelija</h2>
+        <div class="alert alert-warning">
+            <h4>Oletko varma että haluat poistaa tämän opiskelijan?</h4>
+            <p>Tämä toiminto ei ole peruutettavissa!</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Opiskelijan tiedot:</h5>
+                <p><strong>Opiskelijanumero:</strong> <?= htmlspecialchars($student['Opiskelijanumero']) ?></p>
+                <p><strong>Nimi:</strong> <?= htmlspecialchars($student['Etunimi']) ?> <?= htmlspecialchars($student['Sukunimi']) ?></p>
+                <p><strong>Syntymäpäivä:</strong> <?= htmlspecialchars($student['Syntymapaiva']) ?></p>
+                <p><strong>Vuosikurssi:</strong> <?= htmlspecialchars($student['Vuosikurssi']) ?></p>
+            </div>
+        </div>
+        
+        <div class="mt-3">
+            <form method="POST" style="display: inline;">
+                <button type="submit" name="confirm_delete" class="btn btn-danger" 
+                        onclick="return confirm('Oletko aivan varma?')">
+                    Kyllä, poista opiskelija
+                </button>
+            </form>
+            <a href="tiedot.php" class="btn btn-secondary">Peruuta</a>
         </div>
     </div>
-    
-    <div class="mt-3">
-        <form method="POST" style="display: inline;">
-            <button type="submit" name="confirm_delete" class="btn btn-danger" 
-                    onclick="return confirm('Oletko aivan varma?')">
-                Kyllä, poista opiskelija
-            </button>
-        </form>
-        <a href="tiedot.php" class="btn btn-secondary">Peruuta</a>
-    </div>
-</div>
 </body>
 </html>

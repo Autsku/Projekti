@@ -41,40 +41,44 @@ if (!$student) {
     <meta charset="UTF-8">
     <title>Päivitä opiskelija</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles1.css">
 </head>
 <body>
-<div class="container mt-5">
-    <h2>Päivitä opiskelija</h2>
-    
-    <form method="POST">
-        <div class="mb-3">
-            <label class="form-label">Opiskelijanumero:</label>
-            <input type="text" class="form-control" value="<?= $student['Opiskelijanumero'] ?>" readonly>
-        </div>
+    <div class="header">
+        <a href="index.php" class="logo">Logo</a>
+    </div>
+    <div class="container">
+        <h2>Päivitä opiskelija</h2>
         
-        <div class="mb-3">
-            <label class="form-label">Etunimi:</label>
-            <input type="text" name="etunimi" class="form-control" value="<?= htmlspecialchars($student['Etunimi']) ?>" required>
-        </div>
-        
-        <div class="mb-3">
-            <label class="form-label">Sukunimi:</label>
-            <input type="text" name="sukunimi" class="form-control" value="<?= htmlspecialchars($student['Sukunimi']) ?>" required>
-        </div>
-        
-        <div class="mb-3">
-            <label class="form-label">Syntymäpäivä:</label>
-            <input type="date" name="syntymapaiva" class="form-control" value="<?= $student['Syntymapaiva'] ?>" required>
-        </div>
-        
-        <div class="mb-3">
-            <label class="form-label">Vuosikurssi:</label>
-            <input type="number" name="vuosikurssi" class="form-control" value="<?= $student['Vuosikurssi'] ?>" required>
-        </div>
-        
-        <button type="submit" class="btn btn-success">Päivitä</button>
-        <a href="tiedot.php" class="btn btn-secondary">Peruuta</a>
-    </form>
-</div>
+        <form method="POST">
+            <div>
+                <label class="form-label">Opiskelijanumero:</label>
+                <input type="text" class="form-control" value="<?= $student['Opiskelijanumero'] ?>" readonly>
+            </div>
+            
+            <div>
+                <label class="form-label">Etunimi:</label>
+                <input type="text" name="etunimi" class="form-control" value="<?= htmlspecialchars($student['Etunimi']) ?>" required>
+            </div>
+            
+            <div>
+                <label class="form-label">Sukunimi:</label>
+                <input type="text" name="sukunimi" class="form-control" value="<?= htmlspecialchars($student['Sukunimi']) ?>" required>
+            </div>
+            
+            <div>
+                <label class="form-label">Syntymäpäivä:</label>
+                <input type="date" name="syntymapaiva" class="form-control" value="<?= $student['Syntymapaiva'] ?>" required>
+            </div>
+            
+            <div>
+                <label class="form-label">Vuosikurssi:</label>
+                <input type="number" name="vuosikurssi" class="form-control" value="<?= $student['Vuosikurssi'] ?>" required>
+            </div>
+            
+            <button type="submit" class="btn btn-success">Päivitä</button>
+            <a href="tiedot.php" class="btn btn-secondary">Peruuta</a>
+        </form>
+    </div>
 </body>
 </html>

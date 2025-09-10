@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logo</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
     <div class="header">
@@ -19,12 +17,12 @@
         </div>
     </div>
 
-    <div class="box" style="margin: 50px;">
-        <div class="oppilaat">
-            <h3>Oppilaat</h3>
+    <div class="content">
+        <h2 onclick="a()">Oppilaat</h2>
+        <div class="oppilaat" id="oppilaat">
             <a class='btn btn-success btn-sm' href='add.php?table=opiskelijat'>Add</a>
             <br>
-            <table class="table">
+            <table border="1" cellpadding="10">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -65,12 +63,12 @@
             </table>
         </div>
 
-        <div class="opettajat">
-            <h3>Opettajat</h3>
+        <h2 onclick="b()">Opettajat</h2>
+        <div class="opettajat" id="opettajat">
             <a class='btn btn-success btn-sm' href='add.php?table=opettajat'>Add</a>
 
             <br>
-            <table class="table">
+            <table border="1" cellpadding="10">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -107,11 +105,11 @@
             </table>
         </div>
 
-        <div class="kurssit">
-            <h3>Kurssit</h3>
+        <h2 onclick="c()">Kurssit</h2>
+        <div class="kurssit" id="kurssit">
             <a class='btn btn-success btn-sm' href='add.php?table=kurssit'>Add</a>
             <br>
-            <table class="table">
+            <table border="1" cellpadding="10">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -154,11 +152,11 @@
             </table>
         </div>
 
-        <div class="kirjautumiset">
-            <h3>Kirjautumiset</h3>
+        <h2 onclick="d()">Kirjautumiset</h2>
+        <div class="kirjautumiset" id="kirjautumiset">
             <a class='btn btn-success btn-sm' href='add.php?table=kurssikirjautuminen'>Add</a>
             <br>
-            <table class="table">
+            <table border="1" cellpadding="10">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -195,5 +193,44 @@
             </table>
         </div>
     </div>
+
+<script>
+    function a() {
+    var x = document.getElementById("oppilaat");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+    }
+
+    function b() {
+    var x = document.getElementById("opettajat");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+    }
+
+    function c() {
+    var x = document.getElementById("kurssit");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+    }
+
+    function d() {
+    var x = document.getElementById("kirjautumiset");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+    }
+</script>
+
 </body>
 </html>
