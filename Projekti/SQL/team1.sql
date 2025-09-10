@@ -968,10 +968,10 @@ CREATE TABLE `tilat` (
 --
 
 INSERT INTO `tilat` (`Tunnus`, `Nimi`, `Kapasiteetti`) VALUES
-(1, 'Luokka C100', 25),
-(2, 'Luokka A301', 25),
-(3, 'Luokka A302', 25),
-(4, 'Luokka H100', 25),
+(1, 'Luokka C100', 30),
+(2, 'Luokka A301', 30),
+(3, 'Luokka A302', 30),
+(4, 'Luokka H100', 30),
 (5, 'Luokka H101', 25),
 (6, 'Luokka A209', 25),
 (7, 'Luokka A224', 25),
