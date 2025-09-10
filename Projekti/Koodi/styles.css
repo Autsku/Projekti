@@ -92,3 +92,7 @@ table, th, td {
     padding: 10px;
     background-color: rgb(5, 54, 73);
 }
+
+.content h1:hover {
+    text-decoration: underline;
+}
