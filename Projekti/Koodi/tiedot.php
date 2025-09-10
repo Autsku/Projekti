@@ -128,10 +128,17 @@
                         <th>Toiminnot</th>
                     </tr>
                 </thead>
-                
+
                 <tbody>
                     <?php
-                    $sql = "SELECT * FROM kurssit";
+                    // Tehdään JOIN-operaatiot opettajien ja tilojen taulujen kanssa
+                    $sql = "SELECT k.Tunnus, k.Nimi, k.Kuvaus, k.Alkupaiva, k.Loppupaiva,
+                                o.Etunimi, o.Sukunimi,
+                                t.Nimi AS tila_nimi
+                            FROM kurssit k
+                            LEFT JOIN opettajat o ON k.Opettaja = o.Tunnusnumero
+                            LEFT JOIN tilat t ON k.Tila = t.Tunnus
+                            ORDER BY k.Nimi";
                     $result = $yhteys->query($sql);  
 
                     if (!$result) {
@@ -139,19 +146,21 @@
                     }
 
                     while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                        echo"<tr>
-                            <td>" . $row["Tunnus"] . "</td>
-                            <td>" . $row["Nimi"] . "</td>
-                            <td>" . $row["Kuvaus"] . "</td>
-                            <td>" . $row["Alkupaiva"] . "</td>
-                            <td>" . $row["Loppupaiva"] . "</td>
-                            <td>" . $row["Opettaja"] . "</td>
-                            <td>" . $row["Tila"] . "</td>
-                            <td>
-                                <a class='button' href='update.php?table=kurssit&id=" . $row["Tunnus"] . "'>Update</a>
-                                <a class='button' href='delete.php?table=kurssit&id=" . $row["Tunnus"] . "'>Delete</a>                      
-                            </td>
-                        </tr>";
+                        $opettaja = $row["Etunimi"] . " " . $row["Sukunimi"];
+                        $tila = $row["tila_nimi"];
+                        echo "<tr>
+                                <td>" . $row["Tunnus"] . "</td>
+                                <td>" . $row["Nimi"] . "</td>
+                                <td>" . $row["Kuvaus"] . "</td>
+                                <td>" . $row["Alkupaiva"] . "</td>
+                                <td>" . $row["Loppupaiva"] . "</td>
+                                <td>" . htmlspecialchars($opettaja) . "</td>
+                                <td>" . htmlspecialchars($tila) . "</td>
+                                <td>
+                                    <a class='button' href='update.php?table=kurssit&id=" . $row["Tunnus"] . "'>Update</a>
+                                    <a class='button' href='delete.php?table=kurssit&id=" . $row["Tunnus"] . "'>Delete</a>                      
+                                </td>
+                            </tr>";
                     }
                     ?>
                 </tbody>
@@ -164,41 +173,52 @@
         </div>
         <div class="kirjautumiset" id="kirjautumiset">
             <br>
-            <table border="1" cellpadding="10">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Opiskelija</th>
-                        <th>Kurssi</th>
-                        <th>Kirjautumispäivä</th>
-                        <th>Toiminnot</th>
-                    </tr>
-                </thead>
-                
-                <tbody>
-                    <?php
-                    $sql = "SELECT * FROM kurssikirjautuminen";
-                    $result = $yhteys->query($sql);  
+                <table border="1" cellpadding="10">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Opiskelija</th>
+                            <th>Kurssi</th>
+                            <th>Kirjautumispäivä</th>
+                            <th>Toiminnot</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <?php
+                        // Haetaan kirjautumiset yhdistäen opiskelijat ja kurssit tauluihin
+                        $sql = "SELECT kk.Tunnus,
+                                    o.Etunimi, o.Sukunimi,
+                                    k.Nimi AS kurssi_nimi,
+                                    kk.Kirjautumispaiva
+                                FROM kurssikirjautuminen kk
+                                LEFT JOIN opiskelijat o ON kk.Opiskelija = o.Opiskelijanumero
+                                LEFT JOIN kurssit k ON kk.Kurssi = k.Tunnus
+                                ORDER BY kk.Tunnus";
+                        $result = $yhteys->query($sql);  
 
-                    if (!$result) {
-                        die("Invalid query: " . $yhteys->errorInfo()[2]);  
-                    }
+                        if (!$result) {
+                            die("Invalid query: " . $yhteys->errorInfo()[2]);  
+                        }
 
-                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                        echo"<tr>
-                            <td>" . $row["Tunnus"] . "</td>
-                            <td>" . $row["Opiskelija"] . "</td>
-                            <td>" . $row["Kurssi"] . "</td>
-                            <td>" . $row["Kirjautumispaiva"] . "</td>
-                            <td>
-                                <a class='button' href='update.php?table=kurssikirjautuminen&id=" . $row["Tunnus"] . "'>Update</a>
-                                <a class='button' href='delete.php?table=kurssikirjautuminen&id=" . $row["Tunnus"] . "'>Delete</a>
-                            </td>
-                        </tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                            $opiskelija = $row["Etunimi"] . " " . $row["Sukunimi"];
+                            $kurssi = $row["kurssi_nimi"];
+                            echo "<tr>
+                                    <td>" . $row["Tunnus"] . "</td>
+                                    <td>" . htmlspecialchars($opiskelija) . "</td>
+                                    <td>" . htmlspecialchars($kurssi) . "</td>
+                                    <td>" . $row["Kirjautumispaiva"] . "</td>
+                                    <td>
+                                        <a class='button' href='update.php?table=kurssikirjautuminen&id=" . $row["Tunnus"] . "'>Update</a>
+                                        <a class='button' href='delete.php?table=kurssikirjautuminen&id=" . $row["Tunnus"] . "'>Delete</a>
+                                    </td>
+                                </tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+
         </div>
     </div>
 
