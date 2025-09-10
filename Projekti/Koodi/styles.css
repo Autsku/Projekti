@@ -93,6 +93,11 @@ table, th, td {
     background-color: rgb(5, 54, 73);
 }
 
-.content h1:hover {
+.content .top h1:hover {
     text-decoration: underline;
+}
+
+.curse-box {
+    background-color: white;
+    color: rgb(5, 54, 73);
 }

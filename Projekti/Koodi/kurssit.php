@@ -32,10 +32,10 @@ $kurssit = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <div class="content">
-        <h1>Kurssit</h1>
+        <h1 class="kurs">Kurssit</h1>
 
         <?php foreach ($kurssit as $kurssi): ?>
-            <div class="course-box" style="border:1px solid #ccc; padding:10px; margin-bottom:20px;">
+            <div class="course-box" style="border:1px solid white; padding:10px; margin-bottom:20px;">
                 <h2><?= htmlspecialchars($kurssi['Nimi']) ?></h2>
                 <p><strong>Kuvaus:</strong> <?= nl2br(htmlspecialchars($kurssi['Kuvaus'])) ?></p>
                 <p><strong>Alkupäivä:</strong> <?= htmlspecialchars($kurssi['Alkupaiva']) ?></p>
