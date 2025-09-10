@@ -19,7 +19,13 @@
     </div>
 
         <div class="contentf">
-            <p>Some content...</p>
+            <h2>Yhteys tiedot</h2>
+            <h3>Nimi</h3>
+            <p>Numero:</p>
+            <p>Email:</p>
+            <h3>Nimi</h3>
+            <p>Numero:</p>
+            <p>Email:</p>
         </div>
 
 
