@@ -28,12 +28,15 @@ SET time_zone = "+00:00";
 -- Table structure for table `kurssikirjautuminen`
 --
 
+DROP TABLE IF EXISTS `kurssikirjautuminen`;
+
 CREATE TABLE `kurssikirjautuminen` (
   `Tunnus` int(11) NOT NULL,
   `Opiskelija` int(11) NOT NULL,
   `Kurssi` int(11) NOT NULL,
   `Kirjautumispaiva` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 --
 -- Dumping data for table `kurssikirjautuminen`
@@ -67,6 +70,8 @@ INSERT INTO `kurssikirjautuminen` (`Tunnus`, `Opiskelija`, `Kurssi`, `Kirjautumi
 -- Table structure for table `kurssit`
 --
 
+DROP TABLE IF EXISTS `kurssit`;
+
 CREATE TABLE `kurssit` (
   `Tunnus` int(11) NOT NULL,
   `Nimi` varchar(30) NOT NULL,
@@ -76,6 +81,7 @@ CREATE TABLE `kurssit` (
   `Opettaja` int(11) NOT NULL,
   `Tila` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 --
 -- Dumping data for table `kurssit`
@@ -96,6 +102,7 @@ INSERT INTO `kurssit` (`Tunnus`, `Nimi`, `Kuvaus`, `Alkupaiva`, `Loppupaiva`, `O
 --
 -- Table structure for table `opettajat`
 --
+DROP TABLE IF EXISTS `opettajat`;
 
 CREATE TABLE `opettajat` (
   `Tunnusnumero` int(11) NOT NULL,
@@ -103,6 +110,7 @@ CREATE TABLE `opettajat` (
   `Sukunimi` varchar(30) NOT NULL,
   `Aine` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 --
 -- Dumping data for table `opettajat`
@@ -125,6 +133,7 @@ INSERT INTO `opettajat` (`Tunnusnumero`, `Etunimi`, `Sukunimi`, `Aine`) VALUES
 --
 -- Table structure for table `opiskelijat`
 --
+DROP TABLE IF EXISTS `opiskelijat`;
 
 CREATE TABLE `opiskelijat` (
   `Opiskelijanumero` int(11) NOT NULL,
@@ -133,6 +142,7 @@ CREATE TABLE `opiskelijat` (
   `Syntymapaiva` date NOT NULL,
   `Vuosikurssi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 --
 -- Dumping data for table `opiskelijat`
@@ -195,12 +205,14 @@ INSERT INTO `opiskelijat` (`Opiskelijanumero`, `Etunimi`, `Sukunimi`, `Syntymapa
 --
 -- Table structure for table `tilat`
 --
+DROP TABLE IF EXISTS `tilat`;
 
 CREATE TABLE `tilat` (
   `Tunnus` int(11) NOT NULL,
   `Nimi` varchar(30) NOT NULL,
   `Kapasiteetti` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 --
 -- Dumping data for table `tilat`
