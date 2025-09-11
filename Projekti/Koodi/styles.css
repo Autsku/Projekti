@@ -110,3 +110,106 @@ table, th, td {
     padding: 20px; 
     border-radius: 8px;
 }
+
+.card .button {
+    display: inline-block;
+    margin-top: 8px;
+    margin-right: 10px;
+    background-color: rgb(5, 54, 73);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+}
+.card .button:hover {
+    background-color: rgb(0, 40, 60);
+}
+
+.toiminnot-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-right: 8px;
+    color: #fff;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+}
+
+        .card {
+            background-color: white;
+            color: rgb(5, 54, 73);
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            margin: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border: 2px solid rgb(5,54,73);
+        }
+        .card:hover {
+            background-color: rgb(240, 240, 240);
+        }
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .section-content {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            color: rgb(5,54,73);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .section-content table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .section-content table, .section-content th, .section-content td {
+            border: 1px solid rgb(5,54,73);
+            padding: 8px;
+            vertical-align: middle;
+        }
+        .section-content th {
+            background-color: rgb(5,54,73);
+            color: white;
+        }
+        
+        /* Uudet nappityylit */
+        .update-button, .delete-button {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 8px;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+        .update-button {
+            background-color: #7cc47f; /* Vaaleanvihreä */
+        }
+        .update-button:hover {
+            background-color: #5aa35a; /* Tummempi vihreä hover */
+        }
+        .delete-button {
+            background-color: #e1777f; /* Vaaleanpunainen */
+        }
+        .delete-button:hover {
+            background-color: #b9454a; /* Tummempi punainen hover */
+        }

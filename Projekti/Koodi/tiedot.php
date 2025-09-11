@@ -7,55 +7,6 @@ include 'yhteys.php';
     <meta charset="UTF-8">
     <title>Tiedot</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Lisää styleja boksien ja sisällön hallintaan */
-        .card {
-            background-color: white;
-            color: rgb(5, 54, 73);
-            padding: 20px;
-            border-radius: 10px;
-            width: 400px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            margin: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            border: 2px solid rgb(5,54,73);
-        }
-        .card:hover {
-            background-color: rgb(240, 240, 240);
-        }
-        .cards-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-top: 40px;
-        }
-        .section-content {
-            display: none;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: white;
-            color: rgb(5,54,73);
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            max-width: 90%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .section-content table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .section-content table, .section-content th, .section-content td {
-            border: 1px solid rgb(5,54,73);
-            padding: 8px;
-        }
-        .section-content th {
-            background-color: rgb(5,54,73);
-            color: white;
-        }
-    </style>
 </head>
 <body>
 
@@ -74,19 +25,19 @@ include 'yhteys.php';
 
         <div class="cards-container">
             <div class="card" onclick="toggleSection('oppilaat-section')">
-                <h2>Oppilaat</h2>
+                <h1>Oppilaat</h1>
                 <p>Katso opiskelijalistaus, muokkaa tai poista opiskelijoita.</p>
                 <a href="add.php?table=opiskelijat" class="button" onclick="event.stopPropagation()">Lisää oppilas</a>
             </div>
 
             <div class="card" onclick="toggleSection('opettajat-section')">
-                <h2>Opettajat</h2>
+                <h1>Opettajat</h1>
                 <p>Katso opettajalistaus, muokkaa tai poista opettajia.</p>
                 <a href="add.php?table=opettajat" class="button" onclick="event.stopPropagation()">Lisää opettaja</a>
             </div>
 
             <div class="card" onclick="toggleSection('hallinta-section')">
-                <h2>Tiedon hallinta</h2>
+                <h1>Tiedon hallinta</h1>
                 <p>Kurssit ja kirjautumiset – lisää, muokkaa, poista.</p>
                 <a href="add.php?table=kurssit" class="button" onclick="event.stopPropagation()">Lisää kurssi</a>
                 <a href="add.php?table=kurssikirjautuminen" class="button" onclick="event.stopPropagation()">Lisää kirjautuminen</a>
@@ -96,7 +47,7 @@ include 'yhteys.php';
 
         <!-- Oppilaat listaosio -->
         <div id="oppilaat-section" class="section-content">
-            <h3>Oppilaat</h3>
+            <h2>Oppilaat</h2>
             <table>
                 <thead>
                     <tr>
@@ -115,8 +66,8 @@ include 'yhteys.php';
                             <td>".htmlspecialchars($row['Syntymapaiva'])."</td>
                             <td>".htmlspecialchars($row['Vuosikurssi'])."</td>
                             <td>
-                                <a class='button' href='update.php?table=opiskelijat&id={$row['Opiskelijanumero']}'>Update</a>
-                                <a class='button' href='delete.php?table=opiskelijat&id={$row['Opiskelijanumero']}'>Delete</a>
+                                <a class='update-button' href='update.php?table=opiskelijat&id={$row['Opiskelijanumero']}'>Update</a>
+                                <a class='delete-button' href='delete.php?table=opiskelijat&id={$row['Opiskelijanumero']}'>Delete</a>
                             </td>
                         </tr>";
                     }
@@ -127,7 +78,7 @@ include 'yhteys.php';
 
         <!-- Opettajat listaosio -->
         <div id="opettajat-section" class="section-content">
-            <h3>Opettajat</h3>
+            <h2>Opettajat</h2>
             <table>
                 <thead>
                     <tr>
@@ -145,8 +96,8 @@ include 'yhteys.php';
                             <td>".htmlspecialchars($row['Sukunimi'])."</td>
                             <td>".htmlspecialchars($row['Aine'])."</td>
                             <td>
-                                <a class='button' href='update.php?table=opettajat&id={$row['Tunnusnumero']}'>Update</a>
-                                <a class='button' href='delete.php?table=opettajat&id={$row['Tunnusnumero']}'>Delete</a>
+                                <a class='update-button' href='update.php?table=opettajat&id={$row['Tunnusnumero']}'>Update</a>
+                                <a class='delete-button' href='delete.php?table=opettajat&id={$row['Tunnusnumero']}'>Delete</a>
                             </td>
                         </tr>";
                     }
@@ -157,7 +108,7 @@ include 'yhteys.php';
 
         <!-- Hallinta: Kurssit + Kirjautumiset osio -->
         <div id="hallinta-section" class="section-content">
-            <h3>Kurssit</h3>
+            <h2>Kurssit</h2>
             <table>
                 <thead>
                     <tr>
@@ -185,8 +136,8 @@ include 'yhteys.php';
                             <td>{$opettaja}</td>
                             <td>".htmlspecialchars($r['tila_nimi'])."</td>
                             <td>
-                                <a class='button' href='update.php?table=kurssit&id={$r['Tunnus']}'>Update</a>
-                                <a class='button' href='delete.php?table=kurssit&id={$r['Tunnus']}'>Delete</a>
+                                <a class='update-button' href='update.php?table=kurssit&id={$r['Tunnus']}'>Update</a>
+                                <a class='delete-button' href='delete.php?table=kurssit&id={$r['Tunnus']}'>Delete</a>
                             </td>
                         </tr>";
                     }
@@ -194,7 +145,7 @@ include 'yhteys.php';
                 </tbody>
             </table>
 
-            <h3 style="margin-top:40px;">Kirjautumiset</h3>
+            <h2 style="margin-top:70px;">Kirjautumiset</h2>
             <table>
                 <thead>
                     <tr>
@@ -217,8 +168,8 @@ include 'yhteys.php';
                             <td>".htmlspecialchars($r2['kurssi_nimi'])."</td>
                             <td>".htmlspecialchars($r2['Kirjautumispaiva'])."</td>
                             <td>
-                                <a class='button' href='update.php?table=kurssikirjautuminen&id={$r2['Tunnus']}'>Update</a>
-                                <a class='button' href='delete.php?table=kurssikirjautuminen&id={$r2['Tunnus']}'>Delete</a>
+                                <a class='update-button' href='update.php?table=kurssikirjautuminen&id={$r2['Tunnus']}'>Update</a>
+                                <a class='delete-button' href='delete.php?table=kurssikirjautuminen&id={$r2['Tunnus']}'>Delete</a>
                             </td>
                         </tr>";
                     }
