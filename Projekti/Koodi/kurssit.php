@@ -71,6 +71,9 @@ $kurssit = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </tr>
                         <?php endforeach; ?>
                     </table>
+
+                    <p><strong>Opiskelijoita yhteensä:</strong> <?= count($opiskelijat) ?></p>
+
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>
