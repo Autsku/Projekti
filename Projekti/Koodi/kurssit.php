@@ -19,6 +19,30 @@ $kurssit = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kurssit</title>
+    <style>
+        .kurssi-tiedot {
+            display: none;
+            padding: 15px;
+            margin-top: 10px;
+            background-color: white;
+            color: rgb(5, 54, 73);
+            border-radius: 8px;
+        }
+
+        .kurssi-otsikko {
+            cursor: pointer;
+            color: white;
+            background-color: rgb(5, 54, 73);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .kurssi-otsikko:hover {
+            background-color: rgb(0, 40, 60);
+            text-decoration: underline;
+
+        }
+    </style>
 </head>
 <body>
     <div class="header">
@@ -33,11 +57,16 @@ $kurssit = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <div class="content">
-        <h1 class="kurs">Kurssit</h1>
+        <h1>Kurssit</h1>
 
         <?php foreach ($kurssit as $kurssi): ?>
-            <div class="course-box" style="border:1px solid white; padding:10px; margin-bottom:20px;">
-                <h2><?= htmlspecialchars($kurssi['Nimi']) ?></h2>
+            <?php $kurssiId = 'kurssi_' . $kurssi['Tunnus']; ?>
+
+            <h2 class="kurssi-otsikko" onclick="toggleVisibility('<?= $kurssiId ?>')">
+                <?= htmlspecialchars($kurssi['Nimi']) ?>
+            </h2>
+
+            <div class="kurssi-tiedot" id="<?= $kurssiId ?>">
                 <p><strong>Kuvaus:</strong> <?= nl2br(htmlspecialchars($kurssi['Kuvaus'])) ?></p>
                 <p><strong>Alkupäivä:</strong> <?= htmlspecialchars($kurssi['Alkupaiva']) ?></p>
                 <p><strong>Loppupäivä:</strong> <?= htmlspecialchars($kurssi['Loppupaiva']) ?></p>
@@ -71,12 +100,21 @@ $kurssit = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </tr>
                         <?php endforeach; ?>
                     </table>
-
                     <p><strong>Opiskelijoita yhteensä:</strong> <?= count($opiskelijat) ?></p>
-
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>
     </div>
+
+    <script>
+        function toggleVisibility(id) {
+            const element = document.getElementById(id);
+            if (element.style.display === "none" || element.style.display === "") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
