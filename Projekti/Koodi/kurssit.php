@@ -20,28 +20,38 @@ $kurssit = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kurssit</title>
     <style>
-        .kurssi-tiedot {
-            display: none;
-            padding: 15px;
-            margin-top: 10px;
+        .kurssi-box {
             background-color: white;
             color: rgb(5, 54, 73);
+            padding: 15px;
             border-radius: 8px;
-        }
-
-        .kurssi-otsikko {
+            margin-bottom: 20px;
             cursor: pointer;
-            color: white;
-            background-color: rgb(5, 54, 73);
-            padding: 10px;
-            border-radius: 5px;
+            transition: background-color 0.3s ease;
+
+            border: 2px solid rgb(5, 54, 73);  /* reuna boksille */
+            max-width: 1000px;         /* rajoitetaan maksimileveyttä */
+            box-sizing: border-box;   /* jotta padding sisältyy leveyteen */
         }
 
-        .kurssi-otsikko:hover {
-            background-color: rgb(0, 40, 60);
-            text-decoration: underline;
-
+        .kurssi-box:hover {
+            background-color: rgb(240, 240, 240);
         }
+
+        .kurssi-nimi {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .kurssi-tiedot {
+            display: none;
+            margin-top: 10px;
+            border-top: 1px solid rgb(5, 54, 73);
+            padding-top: 10px;
+        }
+
+
     </style>
 </head>
 <body>
@@ -60,60 +70,63 @@ $kurssit = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h1>Kurssit</h1>
 
         <?php foreach ($kurssit as $kurssi): ?>
-            <?php $kurssiId = 'kurssi_' . $kurssi['Tunnus']; ?>
+            <?php
+            $kurssiId = 'kurssi_' . $kurssi['Tunnus'];
 
-            <h2 class="kurssi-otsikko" onclick="toggleVisibility('<?= $kurssiId ?>')">
-                <?= htmlspecialchars($kurssi['Nimi']) ?>
-            </h2>
+            // Haetaan ilmoittautuneiden määrä
+            $stmt2 = $yhteys->prepare("SELECT COUNT(*) AS maara FROM kurssikirjautuminen WHERE Kurssi = ?");
+            $stmt2->execute([$kurssi['Tunnus']]);
+            $maara = $stmt2->fetch(PDO::FETCH_ASSOC)['maara'];
+            ?>
 
-            <div class="kurssi-tiedot" id="<?= $kurssiId ?>">
-                <p><strong>Kuvaus:</strong> <?= nl2br(htmlspecialchars($kurssi['Kuvaus'])) ?></p>
-                <p><strong>Alkupäivä:</strong> <?= htmlspecialchars($kurssi['Alkupaiva']) ?></p>
-                <p><strong>Loppupäivä:</strong> <?= htmlspecialchars($kurssi['Loppupaiva']) ?></p>
+            <div class="kurssi-box" onclick="toggleVisibility('<?= $kurssiId ?>')">
+                <div class="kurssi-nimi"><?= htmlspecialchars($kurssi['Nimi']) ?></div>
                 <p><strong>Opettaja:</strong> <?= htmlspecialchars($kurssi['Etunimi'] . ' ' . $kurssi['Sukunimi']) ?></p>
                 <p><strong>Tila:</strong> <?= htmlspecialchars($kurssi['tila_nimi']) ?></p>
+                <p><strong>Ilmoittautuneita:</strong> <?= $maara ?></p>
 
-                <h3>Ilmoittautuneet opiskelijat</h3>
+                <div class="kurssi-tiedot" id="<?= $kurssiId ?>">
+                    <p><strong>Kuvaus:</strong> <?= nl2br(htmlspecialchars($kurssi['Kuvaus'])) ?></p>
+                    <p><strong>Alkupäivä:</strong> <?= htmlspecialchars($kurssi['Alkupaiva']) ?></p>
+                    <p><strong>Loppupäivä:</strong> <?= htmlspecialchars($kurssi['Loppupaiva']) ?></p>
 
-                <?php
-                $sql2 = "SELECT o.Etunimi, o.Sukunimi, o.Vuosikurssi
-                         FROM kurssikirjautuminen kk
-                         JOIN opiskelijat o ON kk.Opiskelija = o.Opiskelijanumero
-                         WHERE kk.Kurssi = ?";
-                $stmt2 = $yhteys->prepare($sql2);
-                $stmt2->execute([$kurssi['Tunnus']]);
-                $opiskelijat = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-                ?>
+                    <h3>Ilmoittautuneet opiskelijat</h3>
 
-                <?php if (empty($opiskelijat)): ?>
-                    <p>Ei vielä ilmoittautuneita opiskelijoita.</p>
-                <?php else: ?>
-                    <table border="1" cellpadding="5" style="width:100%; max-width:600px;">
-                        <tr>
-                            <th>Nimi</th>
-                            <th>Vuosikurssi</th>
-                        </tr>
-                        <?php foreach ($opiskelijat as $op): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($op['Etunimi'] . ' ' . $op['Sukunimi']) ?></td>
-                            <td><?= htmlspecialchars($op['Vuosikurssi']) ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                    <p><strong>Opiskelijoita yhteensä:</strong> <?= count($opiskelijat) ?></p>
-                <?php endif; ?>
+                    <?php
+                    $sql3 = "SELECT o.Etunimi, o.Sukunimi, o.Vuosikurssi
+                             FROM kurssikirjautuminen kk
+                             JOIN opiskelijat o ON kk.Opiskelija = o.Opiskelijanumero
+                             WHERE kk.Kurssi = ?";
+                    $stmt3 = $yhteys->prepare($sql3);
+                    $stmt3->execute([$kurssi['Tunnus']]);
+                    $opiskelijat = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+                    ?>
+
+                    <?php if (empty($opiskelijat)): ?>
+                        <p>Ei vielä ilmoittautuneita opiskelijoita.</p>
+                    <?php else: ?>
+                        <table border="1" cellpadding="5" style="width:100%; max-width:600px;">
+                            <tr>
+                                <th>Nimi</th>
+                                <th>Vuosikurssi</th>
+                            </tr>
+                            <?php foreach ($opiskelijat as $op): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($op['Etunimi'] . ' ' . $op['Sukunimi']) ?></td>
+                                <td><?= htmlspecialchars($op['Vuosikurssi']) ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    <?php endif; ?>
+                </div>
             </div>
         <?php endforeach; ?>
     </div>
 
     <script>
         function toggleVisibility(id) {
-            const element = document.getElementById(id);
-            if (element.style.display === "none" || element.style.display === "") {
-                element.style.display = "block";
-            } else {
-                element.style.display = "none";
-            }
+            const el = document.getElementById(id);
+            el.style.display = (el.style.display === "block") ? "none" : "block";
         }
     </script>
 </body>
