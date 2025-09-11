@@ -45,9 +45,18 @@ include 'yhteys.php';
 
         </div>
 
-        <!-- Oppilaat listaosio -->
-        <div id="oppilaat-section" class="section-content">
+        <!-- Oppilaat listaosio, sisältää hakupalkin -->
+        <div id="oppilaat-section" class="section-content" style="display:none;">
             <h2>Oppilaat</h2>
+
+            <!-- Hakupalkki -->
+            <form method="GET" onsubmit="event.stopPropagation();" style="margin-bottom: 20px;">
+                <input type="hidden" name="section" value="oppilaat-section">
+                <input type="text" name="search" placeholder="Hae oppilasta nimellä tai ID:llä"
+                    value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" style="padding: 8px; width: 300px;">
+                <button type="submit" style="padding: 8px;">Hae</button>
+            </form>
+
             <table>
                 <thead>
                     <tr>
@@ -56,9 +65,25 @@ include 'yhteys.php';
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "SELECT * FROM opiskelijat";
-                    $result = $yhteys->query($sql);
-                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    // Hakuparametri
+                    $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+                    if ($search !== '') {
+                        // Valmistellaan haku (ID:llä tai nimellä)
+                        $sql = "SELECT * FROM opiskelijat WHERE Opiskelijanumero = :search OR Etunimi LIKE :like_search OR Sukunimi LIKE :like_search";
+                        $stmt = $yhteys->prepare($sql);
+                        $stmt->execute([
+                            ':search' => $search,
+                            ':like_search' => '%' . $search . '%'
+                        ]);
+                        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    } else {
+                        // Näytetään kaikki, jos haku ei ole päällä
+                        $sql = "SELECT * FROM opiskelijat";
+                        $result = $yhteys->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+                    }
+
+                    foreach($result as $row) {
                         echo "<tr>
                             <td>{$row['Opiskelijanumero']}</td>
                             <td>".htmlspecialchars($row['Etunimi'])."</td>
@@ -77,7 +102,7 @@ include 'yhteys.php';
         </div>
 
         <!-- Opettajat listaosio -->
-        <div id="opettajat-section" class="section-content">
+        <div id="opettajat-section" class="section-content" style="display:none;">
             <h2>Opettajat</h2>
             <table>
                 <thead>
@@ -107,7 +132,7 @@ include 'yhteys.php';
         </div>
 
         <!-- Hallinta: Kurssit + Kirjautumiset osio -->
-        <div id="hallinta-section" class="section-content">
+        <div id="hallinta-section" class="section-content" style="display:none;">
             <h2>Kurssit</h2>
             <table>
                 <thead>
@@ -187,7 +212,7 @@ include 'yhteys.php';
                 sec.style.display = "none";
             } else {
                 sec.style.display = "block";
-                // Voit sulkea muut avoinna olevat osiot, jos haluat
+                // Suljetaan muut osiot
                 const others = ['oppilaat-section','opettajat-section','hallinta-section'];
                 others.forEach(function(other) {
                     if (other !== id) {
@@ -197,6 +222,15 @@ include 'yhteys.php';
                         }
                     }
                 });
+            }
+        }
+
+        // Näyttää haetun osion, jos ?section= on URL:ssa
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const section = params.get('section');
+            if(section) {
+                toggleSection(section);
             }
         }
     </script>
