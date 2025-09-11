@@ -714,36 +714,36 @@ CREATE TABLE `kurssit` (
 --
 
 INSERT INTO `kurssit` (`Tunnus`, `Nimi`, `Kuvaus`, `Alkupaiva`, `Loppupaiva`, `Opettaja`, `Tila`) VALUES
-(1, 'Matematiikka', 'Perus matematiikkaa', '2025-01-10', '2025-05-30', 1, 1),
-(2, 'Pitkä Matematiikka', 'Edistynyt matematiikka', '2025-06-01', '2025-09-30', 8, 2),
+(1, 'Matematiikka', 'Perus matematiikkaa', '2025-01-10', '2025-05-30', 1, 2),
+(2, 'Pitkä Matematiikka', 'Edistynyt matematiikka', '2025-06-01', '2025-09-30', 8, 13),
 
-(3, 'Fysiikka', 'Perus fysiikkaa', '2025-02-01', '2025-06-15', 2, 3),
-(4, 'Kvanttifysiikka', 'Fysiikan jatkokurssi', '2025-07-01', '2025-10-15', 2, 17),
+(3, 'Fysiikka', 'Perus fysiikkaa', '2025-02-01', '2025-06-15', 2, 12),
+(4, 'Kvanttifysiikka', 'Fysiikan jatkokurssi', '2025-07-01', '2025-10-15', 2, 12),
 
-(5, 'Historia', 'Suomen historiaa', '2025-03-05', '2025-07-01', 3, 5),
-(6, 'Maailman historia', 'Historiaa maailman laajuisesti', '2025-08-01', '2025-12-01', 3, 6),
+(5, 'Historia', 'Suomen historiaa', '2025-03-05', '2025-07-01', 3, 4),
+(6, 'Maailman historia', 'Historiaa maailman laajuisesti', '2025-08-01', '2025-12-01', 3, 4),
 
-(7, 'Englanti', 'Perus englannin kurssi', '2025-04-01', '2025-08-15', 4, 7),
-(8, 'Englannin kieli ja kirjallisuus', 'Edistynyt englanti', '2025-09-01', '2025-12-15', 4, 20),
+(7, 'Englanti', 'Perus englannin kurssi', '2025-04-01', '2025-08-15', 4, 14),
+(8, 'Englannin kieli ja kirjallisuus', 'Edistynyt englanti', '2025-09-01', '2025-12-15', 4, 14),
 
-(9, 'Kemia', 'Perus kemian kurssi', '2025-05-01', '2025-09-01', 5, 9),
-(10, 'Orgaaninen kemia', 'Kemian jatkokurssi', '2025-09-10', '2026-01-15', 5, 11),
+(9, 'Kemia', 'Perus kemian kurssi', '2025-05-01', '2025-09-01', 5, 12),
+(10, 'Orgaaninen kemia', 'Kemian jatkokurssi', '2025-09-10', '2026-01-15', 5, 12),
 
-(11, 'Äidinkieli', 'Suomen kieli ja kirjallisuus', '2025-03-15', '2025-07-15', 6, 17),
-(12, 'Kirjallisuus', 'Suomalainen kirjallisuus', '2025-08-01', '2025-11-30', 6, 17),
+(11, 'Äidinkieli', 'Suomen kieli ja kirjallisuus', '2025-03-15', '2025-07-15', 6, 1),
+(12, 'Kirjallisuus', 'Suomalainen kirjallisuus', '2025-08-01', '2025-11-30', 6, 5),
 
-(13, 'Uskonto', 'Uskonnon perusteet', '2025-02-20', '2025-06-20', 7, 16),
-(14, 'Etiikka', 'Etiikan perusteet', '2025-07-01', '2025-10-01', 7, 16),
+(13, 'Uskonto', 'Uskonnon perusteet', '2025-02-20', '2025-06-20', 7, 1),
+(14, 'Etiikka', 'Etiikan perusteet', '2025-07-01', '2025-10-01', 7, 3),
 
 (15, 'Liikunta', 'Liikunnan perusteet', '2025-03-01', '2025-07-01', 9, 10),
 
-(16, 'Kuvataide', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 19),
-(17, 'Käsityöt', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 19),
+(16, 'Kuvataide', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 15),
+(17, 'Käsityöt', 'Valmennuskurssi', '2025-07-15', '2025-11-15', 10, 15),
 
-(18, 'Tietojenkäsittelyn perusteet', 'Perusteet tietojenkäsittelystä', '2025-01-15', '2025-06-01', 1, 17),
-(19, 'Ohjelmoinnin perusteet', 'Python-ohjelmoinnin alkeet', '2025-02-01', '2025-06-30', 1, 18),
+(18, 'Tietojenkäsittelyn perusteet', 'Perusteet tietojenkäsittelystä', '2025-01-15', '2025-06-01', 1, 6),
+(19, 'Ohjelmoinnin perusteet', 'Python-ohjelmoinnin alkeet', '2025-02-01', '2025-06-30', 1, 6),
 
-(20, 'Verkko- ja tietoturva', 'Tietoverkkojen turvallisuus', '2025-03-01', '2025-07-15', 9, 20);
+(20, 'Verkko- ja tietoturva', 'Tietoverkkojen turvallisuus', '2025-03-01', '2025-07-15', 9, 6);
 
 
 -- --------------------------------------------------------
