@@ -16,6 +16,26 @@ $tilat = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Tilat</title>
     <style>
         .warning { color: red; font-weight: bold; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 40px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        .tila-header {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        /* Lisätty wrapperille padding */
+        .wrapper {
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
@@ -30,42 +50,43 @@ $tilat = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <div class="content">
-        <h1>Tilat</h1>
+    <div class="wrapper">
+        <div class="content">
+            <h1>Tilat</h1>
 
-        <?php foreach ($tilat as $tila): ?>
-            <div class="course-box" style="border:1px solid #ccc; padding:10px; margin-bottom:20px;">
-                <h2><?= htmlspecialchars($tila['Nimi']) ?></h2>
-                <p><strong>Kapasiteetti:</strong> <?= htmlspecialchars($tila['Kapasiteetti']) ?></p>
+            <?php foreach ($tilat as $tila): ?>
+                <table>
+                    <tr class="tila-header">
+                        <td colspan="5">
+                            <?= htmlspecialchars($tila['Nimi']) ?> — Kapasiteetti: <?= htmlspecialchars($tila['Kapasiteetti']) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Kurssi</th>
+                        <th>Opettaja</th>
+                        <th>Alkupäivä</th>
+                        <th>Loppupäivä</th>
+                        <th>Osallistujia / Kapasiteetti</th>
+                    </tr>
 
-                <h3>Kurssit tässä tilassa</h3>
+                    <?php
+                    // Haetaan kurssit ja opettajat tilassa
+                    $sql2 = "SELECT k.Tunnus, k.Nimi, k.Alkupaiva, k.Loppupaiva,
+                                    o.Etunimi, o.Sukunimi
+                             FROM kurssit k
+                             LEFT JOIN opettajat o ON k.Opettaja = o.Tunnusnumero
+                             WHERE k.Tila = ?
+                             ORDER BY k.Nimi";
+                    $stmt2 = $yhteys->prepare($sql2);
+                    $stmt2->execute([$tila['Tunnus']]);
+                    $kurssit = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-                <?php
-                // Haetaan kurssit ja opettajat tilassa
-                $sql2 = "SELECT k.Tunnus, k.Nimi, k.Alkupaiva, k.Loppupaiva,
-                                o.Etunimi, o.Sukunimi
-                         FROM kurssit k
-                         LEFT JOIN opettajat o ON k.Opettaja = o.Tunnusnumero
-                         WHERE k.Tila = ?
-                         ORDER BY k.Nimi";
-                $stmt2 = $yhteys->prepare($sql2);
-                $stmt2->execute([$tila['Tunnus']]);
-                $kurssit = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-                ?>
-
-                <?php if (empty($kurssit)): ?>
-                    <p>Ei tällä hetkellä kursseja tässä tilassa.</p>
-                <?php else: ?>
-                    <table border="1" cellpadding="5" style="width:100%; max-width:800px;">
+                    if (empty($kurssit)): ?>
                         <tr>
-                            <th>Kurssi</th>
-                            <th>Opettaja</th>
-                            <th>Alkupäivä</th>
-                            <th>Loppupäivä</th>
-                            <th>Osallistujia</th>
+                            <td colspan="5">Ei tällä hetkellä kursseja tässä tilassa.</td>
                         </tr>
-                        <?php foreach ($kurssit as $kurssi): ?>
-                            <?php
+                    <?php else: 
+                        foreach ($kurssit as $kurssi):
                             // Lasketaan osallistujien määrä
                             $sql3 = "SELECT COUNT(*) AS osallistujia FROM kurssikirjautuminen WHERE Kurssi = ?";
                             $stmt3 = $yhteys->prepare($sql3);
@@ -74,24 +95,25 @@ $tilat = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                             // Tarkistetaan, ylittääkö osallistujamäärä kapasiteetin
                             $varoitus = $osallistujat > $tila['Kapasiteetti'];
-                            ?>
-                            <tr>
-                                <td><?= htmlspecialchars($kurssi['Nimi']) ?></td>
-                                <td><?= htmlspecialchars($kurssi['Etunimi'] . ' ' . $kurssi['Sukunimi']) ?></td>
-                                <td><?= htmlspecialchars($kurssi['Alkupaiva']) ?></td>
-                                <td><?= htmlspecialchars($kurssi['Loppupaiva']) ?></td>
-                                <td>
-                                    <?= $osallistujat ?>
-                                    <?php if ($varoitus): ?>
-                                        <span class="warning">&#9888;</span>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </table>
-                <?php endif; ?>
-            </div>
-        <?php endforeach; ?>
+                    ?>
+                        <tr>
+                            <td><?= htmlspecialchars($kurssi['Nimi']) ?></td>
+                            <td><?= htmlspecialchars($kurssi['Etunimi'] . ' ' . $kurssi['Sukunimi']) ?></td>
+                            <td><?= htmlspecialchars($kurssi['Alkupaiva']) ?></td>
+                            <td><?= htmlspecialchars($kurssi['Loppupaiva']) ?></td>
+                            <td>
+                                <?= $osallistujat ?> / <?= htmlspecialchars($tila['Kapasiteetti']) ?>
+                                <?php if ($varoitus): ?>
+                                    <span class="warning" title="Osallistujamäärä ylittää tilan kapasiteetin">&#9888;</span>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php 
+                        endforeach; 
+                    endif; ?>
+                </table>
+            <?php endforeach; ?>
+        </div>
     </div>
 </body>
 </html>

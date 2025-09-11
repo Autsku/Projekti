@@ -102,3 +102,7 @@ table, th, td {
     background-color: white;
     color: rgb(5, 54, 73);
 }
+
+.wrapper {
+    padding: 20px;
+}
