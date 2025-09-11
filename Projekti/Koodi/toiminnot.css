@@ -5,6 +5,7 @@ html, body {
     display: flex;
     flex-direction: column;
     background-color: rgb(5, 54, 73);
+    scroll-behavior: smooth;
 }
 
 .header {
@@ -18,9 +19,9 @@ html, body {
 
 
 .header a:hover {
-    background-color: white;
-    color: rgb(5, 54, 73);
-    border-radius: 30px;
+    background-color: rgb(5, 54, 73);
+    color: white;
+    border-radius: 5px;
 }
 
 .header a {

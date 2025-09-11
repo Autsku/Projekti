@@ -36,12 +36,12 @@ if (!$student) {
     <meta charset="UTF-8">
     <title>Poista opiskelija</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles1.css">
+    <link rel="stylesheet" href="toiminnot.css">
 </head>
 <body>
 
     <div class="header">
-        <a href="index.php" class="logo">Logo</a>
+        <a href="index.php" class="logo">Oppi</a>
     </div>
 
     <div class="container">

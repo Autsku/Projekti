@@ -1,10 +1,10 @@
 html, body {
     margin: 0;
     padding: 0;
-    min-height: 100vh; /* Changed from 150vh for proper vertical centering */
+    min-height: 100vh;
     width: 100%;
     background-color: rgb(5, 54, 73);
-    /* Removed flex and flex-direction here to avoid breaking layout */
+    scroll-behavior: smooth;
 }
 
 .header {
@@ -25,15 +25,11 @@ html, body {
 .header a {
     padding: 10px 15px; 
     transition: all 0.3s ease;
-}
-
-.header a {
     margin: 0;
     color: rgb(5, 54, 73);
     text-decoration: none;
     font-size: 1.3rem;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    transition: all 0.3s ease;
 }
 
 .header .logo{
@@ -46,54 +42,31 @@ html, body {
     font-size: 2.9rem;
 }
 
-.container {
-  display: flex;
-  justify-content: center;    
-  height: 150px;           
-  background-color: rgb(5, 54, 73);
-  color: white;
-  width: 100%;
-  position: absolute;
-  margin-right: 0;
-}
-
-/* ===== UPDATED CONTENT STYLES ===== */
-
 .content {
     display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 10px 20px 30px 20px;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+
+.left-column {
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;  /* center vertically */
-    min-height: calc(100vh - 60px); /* approximate header height subtracted */
-    padding: 10px;
-    color: white;
-}
-
-.curse-box {
-    color: white;
-    font-size: 3rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 30px;
-    background: none !important; /* no background color */
-    padding: 0;
-}
-
-.curse-box p {
-    font-size: 1.3rem;
-    font-weight: normal;
-    margin-top: 15px;
+    flex: 1 1 600px;
+    gap: 30px;
 }
 
 .content .card {
     background-color: white;
     color: rgb(5, 54, 73);
-    width: 100%;
-    max-width: 800px;
     border-radius: 8px;
     padding: 20px;
-    margin-bottom: 20px;
     box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
 }
 
 .content .card h2 {
@@ -107,49 +80,149 @@ html, body {
     font-size: 1.1rem;
 }
 
-/* ===== KEEP THE REST OF YOUR STYLES UNCHANGED ===== */
+.right-column {
+    flex: 1 1 400px;
+    background-color: white;
+    color: rgb(5, 54, 73);
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    max-height: 400px;
+    overflow: hidden;
+}
+
+/* Calendar Header */
+.calendar-header {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    border-bottom: 2px solid rgb(5, 54, 73);
+}
+
+.calendar-header button {
+    background-color: rgb(5, 54, 73);
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.calendar-header button:hover {
+    background-color: rgb(3, 40, 55);
+}
+
+/* Calendar dates container */
+.calendar-dates {
+    flex-grow: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Day names row */
+.day-names {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgb(5, 54, 73);
+}
+
+.day-name {
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    padding: 3px;
+}
+
+/* Dates grid */
+.dates-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+}
+
+/* Each date box */
+.date-cell {
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    cursor: default;
+    font-size: 0.85rem;
+    transition: background-color 0.3s ease;
+    min-height: 28px;
+}
+
+.date-cell.today {
+    background-color: rgb(5, 54, 73);
+    color: white;
+    font-weight: bold;
+}
+
+.date-cell.other-month {
+    color: #ccc;
+}
+
+.date-cell:hover:not(.today) {
+    background-color: rgba(5, 54, 73, 0.1);
+}
+
+/* Curse-box styling */
+.curse-box {
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 120px auto;
+    background: none !important;
+    padding: 80px 40px;
+    max-width: 1000px;
+}
+
+.curse-box h1 {
+    font-size: 3rem;
+    margin: 0;
+}
+
+.curse-box p {
+    font-size: 1.3rem;
+    font-weight: normal;
+    margin-top: 40px;
+    line-height: 1.6;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 .contentf {
     background-color: white;
     color: rgb(5, 54, 73);
-    padding: 10px;
-    position: absolute;
-    bottom: -100vh;
+    padding: 40px;
+    margin-top: 50px;
     width: 100%;
-    justify-content:center;
+    box-sizing: border-box;
 }
 
-table, th, td {
-    background-color: white;
-    color: rgb(5, 54, 73);
+.contentf h2 {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.button {
-    color: rgb(5, 54, 73);
-    background-color: white;
-    padding: 10px;
-    text-decoration: none;
-    border-radius: 15px;
-}
-
-.top {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    padding: 10px;
-    background-color: rgb(5, 54, 73);
-}
-
-.content .top h1:hover {
-    text-decoration: underline;
-}
-
-.curse-box {
-    /* Removed background-color: white; as per your request */
-}
-
-.content .card {
-    margin: 20px;
-    padding: 20px; 
-    border-radius: 8px;
+.contentf h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
