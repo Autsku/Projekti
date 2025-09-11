@@ -69,14 +69,29 @@ include 'yhteys.php';
                     $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
                     if ($search !== '') {
-                        // Valmistellaan haku (ID:llä tai nimellä)
-                        $sql = "SELECT * FROM opiskelijat WHERE Opiskelijanumero = :search OR Etunimi LIKE :like_search OR Sukunimi LIKE :like_search";
-                        $stmt = $yhteys->prepare($sql);
-                        $stmt->execute([
-                            ':search' => $search,
-                            ':like_search' => '%' . $search . '%'
-                        ]);
-                        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $searchParts = preg_split('/\s+/', $search);
+
+                        if (count($searchParts) === 1) {
+                            // Yksi sana - haetaan ID:llä tai etu- tai sukunimellä
+                            $sql = "SELECT * FROM opiskelijat WHERE Opiskelijanumero = :search OR Etunimi LIKE :like_search OR Sukunimi LIKE :like_search";
+                            $stmt = $yhteys->prepare($sql);
+                            $stmt->execute([
+                                ':search' => $search,
+                                ':like_search' => '%' . $search . '%'
+                            ]);
+                            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        } else {
+                            // Useampi sana - haetaan etu- ja sukunimellä
+                            $firstName = $searchParts[0];
+                            $lastName = $searchParts[1];
+                            $sql = "SELECT * FROM opiskelijat WHERE Etunimi LIKE :firstname AND Sukunimi LIKE :lastname";
+                            $stmt = $yhteys->prepare($sql);
+                            $stmt->execute([
+                                ':firstname' => '%' . $firstName . '%',
+                                ':lastname' => '%' . $lastName . '%'
+                            ]);
+                            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        }
                     } else {
                         // Näytetään kaikki, jos haku ei ole päällä
                         $sql = "SELECT * FROM opiskelijat";
