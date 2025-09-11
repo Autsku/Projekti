@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="header">
-        <a href="index.php" class="logo">Logo</a>
+        <a href="index.php" class="logo">Oppi</a>
         <div class="items">
             <a href="tiedot.php">Tiedot</a>
             <a href="tilat.php">Tilat</a>
