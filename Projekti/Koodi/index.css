@@ -32,7 +32,7 @@ html, body {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.header .logo{
+.header .logo {
     align-items: center;
     padding: 5px;
     text-align: left;
@@ -90,8 +90,10 @@ html, body {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    max-height: 400px;
+    max-width: 450px;
+    max-height: 383px; /* Increased height to better match left cards */
     overflow: hidden;
+    margin: 0 auto;
 }
 
 /* Calendar Header */
@@ -123,11 +125,12 @@ html, body {
 /* Calendar dates container */
 .calendar-dates {
     flex-grow: 1;
-    padding: 15px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    width: 100%;
+    width: 100%; /* Changed to fill container */
+    margin: 0 auto;
 }
 
 /* Day names row */
@@ -138,6 +141,8 @@ html, body {
     margin-bottom: 8px;
     padding-bottom: 8px;
     border-bottom: 1px solid rgb(5, 54, 73);
+    width: 100%; /* Fill full width */
+    margin: 0 auto;
 }
 
 .day-name {
@@ -151,7 +156,9 @@ html, body {
 .dates-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 1px;
+    gap: 2px;
+    width: 100%; /* Fill full width */
+    margin: 0 auto;
 }
 
 /* Each date box */
@@ -160,21 +167,24 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 3px;
+    border-radius: 4px;
     cursor: default;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     transition: background-color 0.3s ease;
-    min-height: 28px;
+    min-height: 20px;
+    padding: 4px;
 }
 
 .date-cell.today {
     background-color: rgb(5, 54, 73);
     color: white;
     font-weight: bold;
+    font-size: 0.8rem;
 }
 
 .date-cell.other-month {
     color: #ccc;
+    font-size: 0.7rem;
 }
 
 .date-cell:hover:not(.today) {
