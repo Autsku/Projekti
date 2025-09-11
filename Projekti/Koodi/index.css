@@ -1,11 +1,10 @@
 html, body {
     margin: 0;
     padding: 0;
-    min-height: 150vh;
+    min-height: 100vh; /* Changed from 150vh for proper vertical centering */
     width: 100%;
     background-color: rgb(5, 54, 73);
-    display: flex;
-    flex-direction: column;
+    /* Removed flex and flex-direction here to avoid breaking layout */
 }
 
 .header {
@@ -16,7 +15,6 @@ html, body {
     background-color: rgb(255, 255, 255, 0.9);
     border-bottom: 0.3rem solid rgb(5, 54, 73);
 }
-
 
 .header a:hover {
     background-color: rgb(5, 54, 73);
@@ -59,10 +57,57 @@ html, body {
   margin-right: 0;
 }
 
+/* ===== UPDATED CONTENT STYLES ===== */
+
 .content {
-    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;  /* center vertically */
+    min-height: calc(100vh - 60px); /* approximate header height subtracted */
     padding: 10px;
+    color: white;
 }
+
+.curse-box {
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    background: none !important; /* no background color */
+    padding: 0;
+}
+
+.curse-box p {
+    font-size: 1.3rem;
+    font-weight: normal;
+    margin-top: 15px;
+}
+
+.content .card {
+    background-color: white;
+    color: rgb(5, 54, 73);
+    width: 100%;
+    max-width: 800px;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+}
+
+.content .card h2 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.content .card ul {
+    list-style-position: inside;
+    padding-left: 0;
+    font-size: 1.1rem;
+}
+
+/* ===== KEEP THE REST OF YOUR STYLES UNCHANGED ===== */
 
 .contentf {
     background-color: white;
@@ -100,8 +145,7 @@ table, th, td {
 }
 
 .curse-box {
-    background-color: white;
-    color: rgb(5, 54, 73);
+    /* Removed background-color: white; as per your request */
 }
 
 .content .card {
