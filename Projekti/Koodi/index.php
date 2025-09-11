@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="index.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oppi – Kurssienhallinta</title>
@@ -19,14 +19,13 @@
     </div>
 
     <div class="content">
-        <!-- Tervetuloteksti -->
-        <section class="curse-box" style="margin: 20px; padding: 20px; border-radius: 8px;">
+        <section class="curse-box">
             <h1>Tervetuloa Oppi-järjestelmään</h1>
             <p>Oppi on oppilaitoksen kurssienhallintajärjestelmä, jossa voit hallita opiskelijoita, opettajia, kursseja, tiloja ja ilmoittautumisia.</p>
         </section>
 
         <!-- Ohjeet ja painikkeet eri toiminnoille -->
-        <section class="curse-box" style="margin: 20px; padding: 20px; border-radius: 8px;">
+        <section class="card">
             <h2>Toiminnot</h2>
             <ul>
                 <li>📚 <strong>Kurssit:</strong> Tarkastele ja hallitse kursseja ja näe ilmoittautuneet opiskelijat.</li>
@@ -37,7 +36,7 @@
         </section>
 
         <!-- Ajankohtaista -->
-        <section class="curse-box" style="margin: 20px; padding: 20px; border-radius: 8px;">
+        <section class="card">
             <h2>Ajankohtaista</h2>
             <ul>
                 <li>📢 Kurssi-ilmoittautuminen päättyy 15.9.2025</li>
