@@ -94,7 +94,7 @@ include 'yhteys.php';
                         }
                     } else {
                         // Näytetään kaikki, jos haku ei ole päällä
-                        $sql = "SELECT * FROM opiskelijat";
+                        $sql = "SELECT * FROM opiskelijat ORDER BY Opiskelijanumero";
                         $result = $yhteys->query($sql)->fetchAll(PDO::FETCH_ASSOC);
                     }
 
@@ -137,19 +137,33 @@ include 'yhteys.php';
                 <tbody>
                     <?php
                     $search = isset($_GET['search_opettaja']) ? trim($_GET['search_opettaja']) : '';
+                    
                     if ($search !== '') {
-                        $sql = "SELECT * FROM opettajat 
-                                WHERE Tunnusnumero = :search 
-                                OR Etunimi LIKE :like 
-                                OR Sukunimi LIKE :like";
-                        $stmt = $yhteys->prepare($sql);
-                        $stmt->execute([
-                            ':search' => $search,
-                            ':like' => '%' . $search . '%'
-                        ]);
-                        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $searchParts = preg_split('/\s+/', $search);
+
+                        if (count($searchParts) === 1) {
+                            // Yksi sana - haetaan ID:llä tai etu- tai sukunimellä
+                            $sql = "SELECT * FROM opettajat WHERE Tunnusnumero = :search OR Etunimi LIKE :like_search OR Sukunimi LIKE :like_search";
+                            $stmt = $yhteys->prepare($sql);
+                            $stmt->execute([
+                                ':search' => $search,
+                                ':like_search' => '%' . $search . '%'
+                            ]);
+                            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        } else {
+                            // Useampi sana - haetaan etu- ja sukunimellä
+                            $firstName = $searchParts[0];
+                            $lastName = $searchParts[1];
+                            $sql = "SELECT * FROM opettajat WHERE Etunimi LIKE :firstname AND Sukunimi LIKE :lastname";
+                            $stmt = $yhteys->prepare($sql);
+                            $stmt->execute([
+                                ':firstname' => '%' . $firstName . '%',
+                                ':lastname' => '%' . $lastName . '%'
+                            ]);
+                            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        }
                     } else {
-                        $sql = "SELECT * FROM opettajat";
+                        $sql = "SELECT * FROM opettajat ORDER BY Tunnusnumero";
                         $result = $yhteys->query($sql)->fetchAll(PDO::FETCH_ASSOC);
                     }
                     foreach($result as $row) {
@@ -196,16 +210,36 @@ include 'yhteys.php';
                             FROM kurssit k
                             LEFT JOIN opettajat o ON k.Opettaja = o.Tunnusnumero
                             LEFT JOIN tilat t ON k.Tila = t.Tunnus";
+                    
                     if ($searchKurssi !== '') {
-                        $sql .= " WHERE k.Tunnus = :search OR k.Nimi LIKE :like";
-                        $stmt = $yhteys->prepare($sql);
-                        $stmt->execute([
-                            ':search' => $searchKurssi,
-                            ':like' => '%' . $searchKurssi . '%'
-                        ]);
-                        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $searchParts = preg_split('/\s+/', $searchKurssi);
+                        
+                        if (count($searchParts) === 1) {
+                            // Yksi sana - haetaan ID:llä, kurssinnimellä tai opettajan nimellä
+                            $sql .= " WHERE k.Tunnus = :search OR k.Nimi LIKE :like_search 
+                                     OR o.Etunimi LIKE :like_search OR o.Sukunimi LIKE :like_search";
+                            $stmt = $yhteys->prepare($sql);
+                            $stmt->execute([
+                                ':search' => $searchKurssi,
+                                ':like_search' => '%' . $searchKurssi . '%'
+                            ]);
+                            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        } else {
+                            // Useampi sana - haetaan opettajan etu- ja sukunimellä
+                            $firstName = $searchParts[0];
+                            $lastName = $searchParts[1];
+                            $sql .= " WHERE (o.Etunimi LIKE :firstname AND o.Sukunimi LIKE :lastname) 
+                                     OR k.Nimi LIKE :fullname";
+                            $stmt = $yhteys->prepare($sql);
+                            $stmt->execute([
+                                ':firstname' => '%' . $firstName . '%',
+                                ':lastname' => '%' . $lastName . '%',
+                                ':fullname' => '%' . $searchKurssi . '%'
+                            ]);
+                            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        }
                     } else {
-                        $sql .= " ORDER BY k.Nimi";
+                        $sql .= " ORDER BY k.Tunnus";
                         $res = $yhteys->query($sql)->fetchAll(PDO::FETCH_ASSOC);
                     }
                     foreach($res as $r) {
@@ -251,17 +285,36 @@ include 'yhteys.php';
                             FROM kurssikirjautuminen kk
                             LEFT JOIN opiskelijat o ON kk.Opiskelija = o.Opiskelijanumero
                             LEFT JOIN kurssit k ON kk.Kurssi = k.Tunnus";
+                    
                     if ($searchKirj !== '') {
-                        $sql .= " WHERE kk.Tunnus = :search 
-                                OR o.Etunimi LIKE :like 
-                                OR o.Sukunimi LIKE :like 
-                                OR k.Nimi LIKE :like";
-                        $stmt = $yhteys->prepare($sql);
-                        $stmt->execute([
-                            ':search' => $searchKirj,
-                            ':like' => '%' . $searchKirj . '%'
-                        ]);
-                        $res2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $searchParts = preg_split('/\s+/', $searchKirj);
+                        
+                        if (count($searchParts) === 1) {
+                            // Yksi sana - haetaan ID:llä, etunimellä, sukunimellä tai kurssin nimellä
+                            $sql .= " WHERE kk.Tunnus = :search 
+                                    OR o.Etunimi LIKE :like_search 
+                                    OR o.Sukunimi LIKE :like_search 
+                                    OR k.Nimi LIKE :like_search";
+                            $stmt = $yhteys->prepare($sql);
+                            $stmt->execute([
+                                ':search' => $searchKirj,
+                                ':like_search' => '%' . $searchKirj . '%'
+                            ]);
+                            $res2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        } else {
+                            // Useampi sana - haetaan opiskelijan etu- ja sukunimellä
+                            $firstName = $searchParts[0];
+                            $lastName = $searchParts[1];
+                            $sql .= " WHERE (o.Etunimi LIKE :firstname AND o.Sukunimi LIKE :lastname) 
+                                     OR k.Nimi LIKE :fullname";
+                            $stmt = $yhteys->prepare($sql);
+                            $stmt->execute([
+                                ':firstname' => '%' . $firstName . '%',
+                                ':lastname' => '%' . $lastName . '%',
+                                ':fullname' => '%' . $searchKirj . '%'
+                            ]);
+                            $res2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        }
                     } else {
                         $sql .= " ORDER BY kk.Tunnus";
                         $res2 = $yhteys->query($sql)->fetchAll(PDO::FETCH_ASSOC);
