@@ -1,7 +1,7 @@
 <?php
 include 'yhteys.php';
 
-// Haetaan tilat tietokannasta
+// Haetaan kaikki tilat
 $sql = "SELECT Tunnus, Nimi, Kapasiteetti FROM tilat ORDER BY Nimi";
 $stmt = $yhteys->query($sql);
 $tilat = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -15,26 +15,69 @@ $tilat = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tilat</title>
     <style>
-        .warning { color: red; font-weight: bold; }
-        table {
+        .tilat-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 40px auto;
+        }
+
+        .tila-box {
+            background-color: white;
+            color: rgb(5, 54, 73);
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border: 2px solid rgb(5, 54, 73);
+            position: relative;
+        }
+
+        .tila-box:hover {
+            background-color: rgb(240, 240, 240);
+        }
+
+        .tila-nimi {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .tila-tiedot {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-top: 2px solid rgb(5, 54, 73);
+            background-color: white;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .tila-tiedot table {
             border-collapse: collapse;
             width: 100%;
-            max-width: 900px;
-            margin-bottom: 40px;
+            margin-top: 10px;
         }
-        th, td {
+        .tila-tiedot th, .tila-tiedot td {
             border: 1px solid #ccc;
             padding: 8px 12px;
             text-align: left;
         }
-        .tila-header {
-            background-color: #f0f0f0;
-            font-weight: bold;
-            font-size: 1.2em;
+        .tila-tiedot th {
+            background-color: rgb(5, 54, 73);
+            color: white;
         }
-        /* Lisätty wrapperille padding */
-        .wrapper {
-            padding: 20px;
+
+        .warning {
+            color: red;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .tilat-container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -50,70 +93,93 @@ $tilat = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <div class="wrapper">
-        <div class="content">
-            <h1>Tilat</h1>
-
+    <div class="content">
+        <div class="tilat-container">
             <?php foreach ($tilat as $tila): ?>
-                <table>
-                    <tr class="tila-header">
-                        <td colspan="5">
-                            <?= htmlspecialchars($tila['Nimi']) ?> — Kapasiteetti: <?= htmlspecialchars($tila['Kapasiteetti']) ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Kurssi</th>
-                        <th>Opettaja</th>
-                        <th>Alkupäivä</th>
-                        <th>Loppupäivä</th>
-                        <th>Osallistujia / Kapasiteetti</th>
-                    </tr>
+                <?php
+                // Haetaan kurssit tähän tilaan
+                $sql2 = "SELECT k.Tunnus, k.Nimi, k.Alkupaiva, k.Loppupaiva,
+                                o.Etunimi, o.Sukunimi
+                         FROM kurssit k
+                         LEFT JOIN opettajat o ON k.Opettaja = o.Tunnusnumero
+                         WHERE k.Tila = ?
+                         ORDER BY k.Nimi";
+                $stmt2 = $yhteys->prepare($sql2);
+                $stmt2->execute([$tila['Tunnus']]);
+                $kurssit = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-                    <?php
-                    // Haetaan kurssit ja opettajat tilassa
-                    $sql2 = "SELECT k.Tunnus, k.Nimi, k.Alkupaiva, k.Loppupaiva,
-                                    o.Etunimi, o.Sukunimi
-                             FROM kurssit k
-                             LEFT JOIN opettajat o ON k.Opettaja = o.Tunnusnumero
-                             WHERE k.Tila = ?
-                             ORDER BY k.Nimi";
-                    $stmt2 = $yhteys->prepare($sql2);
-                    $stmt2->execute([$tila['Tunnus']]);
-                    $kurssit = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+                // Lasketaan kurssien määrä
+                $kurssien_maara = count($kurssit);
+                ?>
 
-                    if (empty($kurssit)): ?>
-                        <tr>
-                            <td colspan="5">Ei tällä hetkellä kursseja tässä tilassa.</td>
-                        </tr>
-                    <?php else: 
-                        foreach ($kurssit as $kurssi):
-                            // Lasketaan osallistujien määrä
-                            $sql3 = "SELECT COUNT(*) AS osallistujia FROM kurssikirjautuminen WHERE Kurssi = ?";
-                            $stmt3 = $yhteys->prepare($sql3);
-                            $stmt3->execute([$kurssi['Tunnus']]);
-                            $osallistujat = $stmt3->fetch(PDO::FETCH_ASSOC)['osallistujia'];
+                <div class="tila-box" onclick="toggleTila('tila_<?= $tila['Tunnus'] ?>')">
+                    <div class="tila-nimi"><?= htmlspecialchars($tila['Nimi']) ?></div>
+                    <p><strong>Kapasiteetti:</strong> <?= htmlspecialchars($tila['Kapasiteetti']) ?></p>
+                    <p><strong>Kurssien määrä:</strong> <?= $kurssien_maara ?></p>
 
-                            // Tarkistetaan, ylittääkö osallistujamäärä kapasiteetin
-                            $varoitus = $osallistujat > $tila['Kapasiteetti'];
-                    ?>
-                        <tr>
-                            <td><?= htmlspecialchars($kurssi['Nimi']) ?></td>
-                            <td><?= htmlspecialchars($kurssi['Etunimi'] . ' ' . $kurssi['Sukunimi']) ?></td>
-                            <td><?= htmlspecialchars($kurssi['Alkupaiva']) ?></td>
-                            <td><?= htmlspecialchars($kurssi['Loppupaiva']) ?></td>
-                            <td>
-                                <?= $osallistujat ?> / <?= htmlspecialchars($tila['Kapasiteetti']) ?>
-                                <?php if ($varoitus): ?>
-                                    <span class="warning" title="Osallistujamäärä ylittää tilan kapasiteetin">&#9888;</span>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                    <?php 
-                        endforeach; 
-                    endif; ?>
-                </table>
+                    <div class="tila-tiedot" id="tila_<?= $tila['Tunnus'] ?>">
+                        <?php if (empty($kurssit)): ?>
+                            <p><em>Ei kursseja tässä tilassa.</em></p>
+                        <?php else: ?>
+                            <table>
+                                <tr>
+                                    <th>Kurssi</th>
+                                    <th>Opettaja</th>
+                                    <th>Alkupäivä</th>
+                                    <th>Loppupäivä</th>
+                                    <th>Osallistujat</th>
+                                </tr>
+                                <?php foreach ($kurssit as $kurssi): ?>
+                                    <?php
+                                    $sql3 = "SELECT COUNT(*) AS osallistujia FROM kurssikirjautuminen WHERE Kurssi = ?";
+                                    $stmt3 = $yhteys->prepare($sql3);
+                                    $stmt3->execute([$kurssi['Tunnus']]);
+                                    $osallistujat = $stmt3->fetch(PDO::FETCH_ASSOC)['osallistujia'];
+                                    $varoitus = $osallistujat > $tila['Kapasiteetti'];
+                                    ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($kurssi['Nimi']) ?></td>
+                                        <td><?= htmlspecialchars($kurssi['Etunimi'] . ' ' . $kurssi['Sukunimi']) ?></td>
+                                        <td><?= htmlspecialchars($kurssi['Alkupaiva']) ?></td>
+                                        <td><?= htmlspecialchars($kurssi['Loppupaiva']) ?></td>
+                                        <td>
+                                            <?= $osallistujat ?> / <?= htmlspecialchars($tila['Kapasiteetti']) ?>
+                                            <?php if ($varoitus): ?>
+                                                <span class="warning" title="Osallistujamäärä ylittää kapasiteetin">&#9888;</span>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        <?php endif; ?>
+                    </div>
+                </div>
             <?php endforeach; ?>
         </div>
     </div>
+
+    <script>
+        function toggleTila(tilaId) {
+            let all = document.querySelectorAll('.tila-tiedot');
+            all.forEach(function(t) {
+                if (t.id !== tilaId) {
+                    t.style.display = 'none';
+                }
+            });
+            let target = document.getElementById(tilaId);
+            if (target) {
+                target.style.display = (target.style.display === 'block') ? 'none' : 'block';
+            }
+        }
+
+        // Piilota jos klikataan muualle
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.tila-box')) {
+                document.querySelectorAll('.tila-tiedot').forEach(function(t) {
+                    t.style.display = 'none';
+                });
+            }
+        });
+    </script>
 </body>
 </html>
