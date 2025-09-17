@@ -30,7 +30,7 @@ $opettajat = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h1>Opettajat ja heidän kurssinsa</h1>
 
         <?php foreach ($opettajat as $opettaja): ?>
-            <div class="teacher-box" style="border:1px solid #ccc; padding:10px; margin-bottom:20px;">
+            <div class="teacher-box" style="border:8px outset #ccc; padding:7px; margin-bottom:20px;">
                 <h2><?= htmlspecialchars($opettaja['Etunimi'] . ' ' . $opettaja['Sukunimi']) ?></h2>
                 <p><strong>Aine:</strong> <?= htmlspecialchars($opettaja['Aine']) ?></p>
 
