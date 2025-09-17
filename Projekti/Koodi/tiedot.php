@@ -119,6 +119,15 @@ include 'yhteys.php';
         <!-- Opettajat listaosio -->
         <div id="opettajat-section" class="section-content" style="display:none;">
             <h2>Opettajat</h2>
+
+            <!-- Hakupalkki -->
+            <form method="GET" onsubmit="event.stopPropagation();" style="margin-bottom: 20px;">
+                <input type="hidden" name="section" value="opettajat-section">
+                <input type="text" name="search_opettaja" placeholder="Hae opettajaa nimellä tai ID:llä"
+                    value="<?php echo isset($_GET['search_opettaja']) ? htmlspecialchars($_GET['search_opettaja']) : ''; ?>" style="padding: 8px; width: 300px;">
+                <button type="submit" style="padding: 8px;">Hae</button>
+            </form>
+
             <table>
                 <thead>
                     <tr>
@@ -127,9 +136,23 @@ include 'yhteys.php';
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "SELECT * FROM opettajat";
-                    $result = $yhteys->query($sql);
-                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    $search = isset($_GET['search_opettaja']) ? trim($_GET['search_opettaja']) : '';
+                    if ($search !== '') {
+                        $sql = "SELECT * FROM opettajat 
+                                WHERE Tunnusnumero = :search 
+                                OR Etunimi LIKE :like 
+                                OR Sukunimi LIKE :like";
+                        $stmt = $yhteys->prepare($sql);
+                        $stmt->execute([
+                            ':search' => $search,
+                            ':like' => '%' . $search . '%'
+                        ]);
+                        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    } else {
+                        $sql = "SELECT * FROM opettajat";
+                        $result = $yhteys->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+                    }
+                    foreach($result as $row) {
                         echo "<tr>
                             <td>{$row['Tunnusnumero']}</td>
                             <td>".htmlspecialchars($row['Etunimi'])."</td>
@@ -146,9 +169,18 @@ include 'yhteys.php';
             </table>
         </div>
 
-        <!-- Hallinta: Kurssit + Kirjautumiset osio -->
+        <!-- Hallinta: Kurssit osio -->
         <div id="hallinta-section" class="section-content" style="display:none;">
             <h2>Kurssit</h2>
+
+            <!-- Hakupalkki -->
+            <form method="GET" onsubmit="event.stopPropagation();" style="margin-bottom: 20px;">
+                <input type="hidden" name="section" value="hallinta-section">
+                <input type="text" name="search_kurssi" placeholder="Hae kurssia nimellä tai ID:llä"
+                    value="<?php echo isset($_GET['search_kurssi']) ? htmlspecialchars($_GET['search_kurssi']) : ''; ?>" style="padding: 8px; width: 300px;">
+                <button type="submit" style="padding: 8px;">Hae</button>
+            </form>
+
             <table>
                 <thead>
                     <tr>
@@ -157,15 +189,26 @@ include 'yhteys.php';
                 </thead>
                 <tbody>
                     <?php
+                    $searchKurssi = isset($_GET['search_kurssi']) ? trim($_GET['search_kurssi']) : '';
                     $sql = "SELECT k.Tunnus, k.Nimi, k.Kuvaus, k.Alkupaiva, k.Loppupaiva,
-                                   o.Etunimi, o.Sukunimi,
-                                   t.Nimi AS tila_nimi
+                                o.Etunimi, o.Sukunimi,
+                                t.Nimi AS tila_nimi
                             FROM kurssit k
                             LEFT JOIN opettajat o ON k.Opettaja = o.Tunnusnumero
-                            LEFT JOIN tilat t ON k.Tila = t.Tunnus
-                            ORDER BY k.Nimi";
-                    $res = $yhteys->query($sql);
-                    while($r = $res->fetch(PDO::FETCH_ASSOC)) {
+                            LEFT JOIN tilat t ON k.Tila = t.Tunnus";
+                    if ($searchKurssi !== '') {
+                        $sql .= " WHERE k.Tunnus = :search OR k.Nimi LIKE :like";
+                        $stmt = $yhteys->prepare($sql);
+                        $stmt->execute([
+                            ':search' => $searchKurssi,
+                            ':like' => '%' . $searchKurssi . '%'
+                        ]);
+                        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    } else {
+                        $sql .= " ORDER BY k.Nimi";
+                        $res = $yhteys->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+                    }
+                    foreach($res as $r) {
                         $opettaja = htmlspecialchars($r['Etunimi'] . ' ' . $r['Sukunimi']);
                         echo "<tr>
                             <td>{$r['Tunnus']}</td>
@@ -186,6 +229,15 @@ include 'yhteys.php';
             </table>
 
             <h2 style="margin-top:70px;">Kirjautumiset</h2>
+
+            <!-- Hakupalkki -->
+            <form method="GET" onsubmit="event.stopPropagation();" style="margin-bottom: 20px;">
+                <input type="hidden" name="section" value="hallinta-section">
+                <input type="text" name="search_kirjautuminen" placeholder="Hae opiskelijaa tai kurssia"
+                    value="<?php echo isset($_GET['search_kirjautuminen']) ? htmlspecialchars($_GET['search_kirjautuminen']) : ''; ?>" style="padding: 8px; width: 300px;">
+                <button type="submit" style="padding: 8px;">Hae</button>
+            </form>
+
             <table>
                 <thead>
                     <tr>
@@ -194,13 +246,27 @@ include 'yhteys.php';
                 </thead>
                 <tbody>
                     <?php
+                    $searchKirj = isset($_GET['search_kirjautuminen']) ? trim($_GET['search_kirjautuminen']) : '';
                     $sql = "SELECT kk.Tunnus, o.Etunimi, o.Sukunimi, k.Nimi AS kurssi_nimi, kk.Kirjautumispaiva
                             FROM kurssikirjautuminen kk
                             LEFT JOIN opiskelijat o ON kk.Opiskelija = o.Opiskelijanumero
-                            LEFT JOIN kurssit k ON kk.Kurssi = k.Tunnus
-                            ORDER BY kk.Tunnus";
-                    $res2 = $yhteys->query($sql);
-                    while($r2 = $res2->fetch(PDO::FETCH_ASSOC)) {
+                            LEFT JOIN kurssit k ON kk.Kurssi = k.Tunnus";
+                    if ($searchKirj !== '') {
+                        $sql .= " WHERE kk.Tunnus = :search 
+                                OR o.Etunimi LIKE :like 
+                                OR o.Sukunimi LIKE :like 
+                                OR k.Nimi LIKE :like";
+                        $stmt = $yhteys->prepare($sql);
+                        $stmt->execute([
+                            ':search' => $searchKirj,
+                            ':like' => '%' . $searchKirj . '%'
+                        ]);
+                        $res2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    } else {
+                        $sql .= " ORDER BY kk.Tunnus";
+                        $res2 = $yhteys->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+                    }
+                    foreach($res2 as $r2) {
                         $opiskelijaNimi = htmlspecialchars($r2['Etunimi'] . ' ' . $r2['Sukunimi']);
                         echo "<tr>
                             <td>{$r2['Tunnus']}</td>
@@ -217,37 +283,32 @@ include 'yhteys.php';
                 </tbody>
             </table>
         </div>
-
     </div>
 
     <script>
-        function toggleSection(id) {
-            const sec = document.getElementById(id);
-            if (sec.style.display === "block") {
-                sec.style.display = "none";
-            } else {
-                sec.style.display = "block";
-                // Suljetaan muut osiot
-                const others = ['oppilaat-section','opettajat-section','hallinta-section'];
-                others.forEach(function(other) {
-                    if (other !== id) {
-                        const o = document.getElementById(other);
-                        if (o.style.display === "block") {
-                            o.style.display = "none";
-                        }
-                    }
-                });
+        function toggleSection(sectionId) {
+            // Hide all sections first
+            var sections = document.querySelectorAll('.section-content');
+            sections.forEach(function(section) {
+                section.style.display = 'none';
+            });
+            
+            // Show the clicked section
+            var targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
             }
         }
 
-        // Näyttää haetun osion, jos ?section= on URL:ssa
-        window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            const section = params.get('section');
-            if(section) {
+        // Check if we need to show a specific section based on URL parameters
+        window.addEventListener('DOMContentLoaded', function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var section = urlParams.get('section');
+            
+            if (section) {
                 toggleSection(section);
             }
-        }
+        });
     </script>
 
 </body>
