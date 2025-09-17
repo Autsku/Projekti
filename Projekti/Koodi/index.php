@@ -56,15 +56,38 @@
     </div>
 
     <div class="contentf">
-        <h2>Yhteystiedot</h2>
+        <h1>Yhteystiedot</h1>
+        <div class="contacts-grid">
+            <section class="contact">
+                <h3>Opinto-ohjaaja Mari Meikäläinen</h3>
+                <p>📞 040 123 4567</p>
+                <p>✉️ mari.meikalainen@koulu.fi</p>
+            </section>
 
-        <h3>Opinto-ohjaaja Mari Meikäläinen</h3>
-        <p>📞 040 123 4567</p>
-        <p>✉️ mari.meikalainen@koulu.fi</p>
+            <section class="contact">
+                <h3>Koulu-kuraattori Tomi Mänty</h3>
+                <p>📞 040 123 4567</p>
+                <p>✉️ tomi.manty@koulu.fi</p>
+            </section>
 
-        <h3>IT-tuki</h3>
-        <p>📞 040 987 6543</p>
-        <p>✉️ it@koulu.fi</p>
+            <section class="contact">
+                <h3>IT-tuki Korhi Havunen</h3>
+                <p>📞 040 123 4567</p>
+                <p>✉️ kori.havunen@koulu.fi</p>
+            </section>
+
+            <section class="contact">
+                <h3>Rehtori Juha Tapiola</h3>
+                <p>📞 040 123 4567</p>
+                <p>✉️ juha.tapiola@koulu.fi</p>
+            </section>
+
+            <section class="contact">
+                <h3>Info</h3>
+                <p>📞 040 123 4567</p>
+                <p>✉️ info@koulu.fi</p>
+            </section>
+        </div>
     </div>
 
     <script>
