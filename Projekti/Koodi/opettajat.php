@@ -31,17 +31,6 @@ $opettajat = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Opettajat</title>
 </head>
 <body>
-<<<<<<< HEAD
-    <div class="header">
-        <a href="index.php" class="logo">Oppi</a>
-        <div class="items">
-            <a href="tiedot.php">Tiedot</a>
-            <a href="tilat.php">Tilat</a>
-            <a href="kurssit.php">Kurssit</a>
-            <a href="opiskelijat.php">Opiskelijat</a>
-            <a href="opettajat.php" style="text-decoration: underline;">Opettajat</a>
-        </div>
-=======
 <div class="header">
     <a href="index.php" class="logo">Oppi</a>
     <div class="items">
@@ -61,7 +50,6 @@ $opettajat = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <input type="text" name="search" placeholder="Hae opettajaa nimellä" value="<?= htmlspecialchars($search) ?>">
             <button type="submit">Hae</button>
         </form>
->>>>>>> 7cedff472cb79622dad4abdc65944a86ef98c05a
     </div>
 
     <div class="teachers-container">
