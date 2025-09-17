@@ -27,14 +27,13 @@ $opettajat = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <div class="content">
-        <h1>Opettajat ja heidän kurssinsa</h1>
 
-        <?php foreach ($opettajat as $opettaja): ?>
-            <div class="teacher-box" style="border:8px outset #ccc; padding:7px; margin-bottom:20px;">
-                <h2><?= htmlspecialchars($opettaja['Etunimi'] . ' ' . $opettaja['Sukunimi']) ?></h2>
-                <p><strong>Aine:</strong> <?= htmlspecialchars($opettaja['Aine']) ?></p>
-
+        <div class="teachers-container">
+            <?php foreach ($opettajat as $opettaja): ?>
                 <?php
+                $teacherId = 'teacher_' . $opettaja['Tunnusnumero'];
+
+                // Haetaan kurssit
                 $sql2 = "SELECT k.Nimi, k.Alkupaiva, k.Loppupaiva, t.Nimi AS tila_nimi
                          FROM kurssit k
                          LEFT JOIN tilat t ON k.Tila = t.Tunnus
@@ -44,29 +43,60 @@ $opettajat = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $stmt2->execute([$opettaja['Tunnusnumero']]);
                 $kurssit = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                 ?>
+                
+                <div class="teacher-box" onclick="toggleTeacher('<?= $teacherId ?>')">
+                    <h2><?= htmlspecialchars($opettaja['Etunimi'] . ' ' . $opettaja['Sukunimi']) ?></h2>
+                    <p><strong>Aine:</strong> <?= htmlspecialchars($opettaja['Aine']) ?></p>
+                    <p><strong>Kurssien määrä:</strong> <?= count($kurssit) ?></p> <!-- Uusi rivi -->
 
-                <?php if (empty($kurssit)): ?>
-                    <p>Tällä opettajalla ei ole vielä kursseja.</p>
-                <?php else: ?>
-                    <table border="1" cellpadding="5" style="width:100%; max-width:800px; margin-top:10px;">
-                        <tr>
-                            <th>Kurssi</th>
-                            <th>Alkupäivä</th>
-                            <th>Loppupäivä</th>
-                            <th>Tila</th>
-                        </tr>
-                        <?php foreach ($kurssit as $kurssi): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($kurssi['Nimi']) ?></td>
-                            <td><?= htmlspecialchars($kurssi['Alkupaiva']) ?></td>
-                            <td><?= htmlspecialchars($kurssi['Loppupaiva']) ?></td>
-                            <td><?= htmlspecialchars($kurssi['tila_nimi']) ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                <?php endif; ?>
-            </div>
-        <?php endforeach; ?>
+                    <div class="teacher-details" id="<?= $teacherId ?>">
+                        <?php if (empty($kurssit)): ?>
+                            <p><em>Tällä opettajalla ei ole vielä kursseja.</em></p>
+                        <?php else: ?>
+                            <table>
+                                <tr>
+                                    <th>Kurssi</th>
+                                    <th>Alkupäivä</th>
+                                    <th>Loppupäivä</th>
+                                    <th>Tila</th>
+                                </tr>
+                                <?php foreach ($kurssit as $kurssi): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($kurssi['Nimi']) ?></td>
+                                        <td><?= htmlspecialchars($kurssi['Alkupaiva']) ?></td>
+                                        <td><?= htmlspecialchars($kurssi['Loppupaiva']) ?></td>
+                                        <td><?= htmlspecialchars($kurssi['tila_nimi']) ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+            <?php endforeach; ?>
+        </div>
     </div>
+
+    <script>
+        function toggleTeacher(teacherId) {
+            let allDetails = document.querySelectorAll('.teacher-details');
+            allDetails.forEach(function(d) {
+                if (d.id !== teacherId) d.style.display = 'none';
+            });
+
+            let target = document.getElementById(teacherId);
+            if (target) {
+                target.style.display = (target.style.display === 'block') ? 'none' : 'block';
+            }
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.teacher-box')) {
+                document.querySelectorAll('.teacher-details').forEach(function(d) {
+                    d.style.display = 'none';
+                });
+            }
+        });
+    </script>
 </body>
 </html>
