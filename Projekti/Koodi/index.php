@@ -51,7 +51,6 @@
                 <button id="next-month">▶</button>
             </div>
             <div class="calendar-dates" id="calendar-dates">
-                <!-- Calendar will be rendered here -->
             </div>
         </section>
     </div>
