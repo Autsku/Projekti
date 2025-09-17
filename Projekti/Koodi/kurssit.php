@@ -51,17 +51,16 @@ $kurssit = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         .kurssi-tiedot {
             display: none;
-            position: absolute;
-            top: 100%;
+            position: absolute;    /* nyt se kelluu päälle */
+            top: 100%;             /* alkaa boksin alapuolelta */
             left: 0;
             right: 0;
             background-color: white;
             border: 2px solid rgb(5, 54, 73);
-            border-top: none;
             border-radius: 0 0 8px 8px;
-            padding: 20px;
-            z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            z-index: 1000;         /* pysyy muiden päällä */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
         .kurssi-box {

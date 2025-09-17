@@ -213,3 +213,75 @@ table, th, td {
         .delete-button:hover {
             background-color: #b9454a; /* Tummempi punainen hover */
         }
+
+        .tilat-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 40px auto;
+        }
+
+        .tila-box {
+            background-color: white;
+            color: rgb(5, 54, 73);
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border: 2px solid rgb(5, 54, 73);
+            position: relative; /* tärkeä, jotta tiedot kiinnittyvät tähän */
+            overflow: visible;  /* sallii overlayn näkyä boksin ulkopuolella */
+        }
+
+        
+        .tila-box:hover {
+            background-color: rgb(240, 240, 240);
+        }
+
+        .tila-nimi {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .tila-tiedot {
+            display: none;
+            position: absolute;    /* nyt se kelluu päälle */
+            top: 100%;             /* alkaa boksin alapuolelta */
+            left: 0;
+            right: 0;
+            background-color: white;
+            border: 2px solid rgb(5, 54, 73);
+            border-radius: 0 0 8px 8px;
+            padding: 15px;
+            z-index: 1000;         /* pysyy muiden päällä */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .tila-tiedot table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .tila-tiedot th, .tila-tiedot td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        .tila-tiedot th {
+            background-color: rgb(5, 54, 73);
+            color: white;
+        }
+
+        .warning {
+            color: red;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .tilat-container {
+                grid-template-columns: 1fr;
+            }
+        }
