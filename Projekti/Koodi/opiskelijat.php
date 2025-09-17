@@ -112,7 +112,7 @@ $opiskelijat = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         .course-count {
             display: inline-block;
-            background-color: #1E3A8A; /* tumma sininen */
+            background-color: rgb(5, 54, 73);
             color: white;
             padding: 4px 10px;
             border-radius: 20px;
