@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="Styles/index.css">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Oppi – Kurssienhallinta</title>

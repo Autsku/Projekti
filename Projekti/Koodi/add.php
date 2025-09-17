@@ -105,7 +105,7 @@ $titles = [
 </head>
 <body>
     <div class="header">
-        <a href="index.php" class="logo">Oppi</a>
+        <a href="Styles/index.php" class="logo">Oppi</a>
     </div>
 
     <div class="container">

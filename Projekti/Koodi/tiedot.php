@@ -6,7 +6,7 @@ include 'yhteys.php';
 <head>
     <meta charset="UTF-8">
     <title>Tiedot</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="Styles/styles.css">
 </head>
 <body>
 
