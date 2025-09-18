@@ -64,9 +64,24 @@ $tilat = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt2->execute([$tila['Tunnus']]);
             $kurssit = $stmt2->fetchAll(PDO::FETCH_ASSOC);
             $kurssien_maara = count($kurssit);
+
+            // Tarkistetaan, ylittääkö joku kurssi kapasiteetin
+            $ylittaaKapasiteetin = false;
+            foreach ($kurssit as $kurssi) {
+                $stmt3 = $yhteys->prepare("SELECT COUNT(*) AS osallistujia FROM kurssikirjautuminen WHERE Kurssi = ?");
+                $stmt3->execute([$kurssi['Tunnus']]);
+                $osallistujat = $stmt3->fetch(PDO::FETCH_ASSOC)['osallistujia'];
+                if ($osallistujat > $tila['Kapasiteetti']) {
+                    $ylittaaKapasiteetin = true;
+                    break; // riittää, että yksi kurssi ylittää kapasiteetin
+                }
+            }
             ?>
 
-            <div class="tila-box" onclick="toggleTila('tila_<?= $tila['Tunnus'] ?>')">
+            <div class="tila-box <?= $ylittaaKapasiteetin ? 'warning-box' : '' ?>" onclick="toggleTila('tila_<?= $tila['Tunnus'] ?>')">
+                <?php if ($ylittaaKapasiteetin): ?>
+                    <div class="warning-triangle" title="Ylittää kapasiteetin">&#9888;</div>
+                <?php endif; ?>
                 <div class="tila-nimi"><?= htmlspecialchars($tila['Nimi']) ?></div>
                 <p><strong>Kapasiteetti:</strong> <?= htmlspecialchars($tila['Kapasiteetti']) ?></p>
                 <p><strong>Kurssien määrä:</strong> <?= $kurssien_maara ?></p>

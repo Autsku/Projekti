@@ -274,12 +274,6 @@ table, th, td {
     color: white;
 }
 
-.warning {
-    color: red;
-    font-weight: bold;
-    margin-left: 8px;
-}
-
 @media (max-width: 768px) {
     .tilat-container {
         grid-template-columns: 1fr;
@@ -514,4 +508,23 @@ table, th, td {
 }
 .search-container button:hover {
     background-color: rgb(0, 40, 60);
+}
+
+.warning-box {
+    border: 1px solid red;
+    position: relative;
+}
+
+.warning-triangle {
+    color: red;
+    font-size: 26px;
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}
+
+.warning {
+    color: red;
+    font-weight: bold;
+    margin-left: 8px;
 }
