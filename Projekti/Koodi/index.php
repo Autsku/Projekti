@@ -50,6 +50,11 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
                     <option value="room">🏫 Tilat</option>
                 </select>
 
+                <!-- Hakukenttä -->
+                <div class="search-container">
+                    <input type="text" id="person-search" placeholder="Hae nimellä tai ID:llä..." style="padding: 8px; width: 200px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+
                 <select id="calendar-person"></select>
 
                 <!-- Viikkonavigointi -->
@@ -132,6 +137,62 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
         </div>
     </div>
 
+    <style>
+        /* Lisätyylit viikkonavigointiin ja hakuun */
+        .search-container {
+            margin: 0 0.5rem;
+        }
+        
+        .week-navigation {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-left: 1rem;
+        }
+        
+        .week-nav-btn {
+            padding: 0.5rem 1rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        
+        .week-nav-btn:hover {
+            background: #5a67d8;
+        }
+        
+        .week-info {
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .calendar-chooser {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .week-navigation {
+                margin-left: 0;
+                justify-content: center;
+            }
+            
+            .search-container {
+                margin: 0;
+            }
+            
+            #person-search {
+                width: 100% !important;
+            }
+        }
+    </style>
+
     <script>
     // Tietokannan data PHP:sta JavaScriptiin
     const teachers = <?php echo json_encode($opettajat); ?>;
@@ -139,6 +200,11 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
     const rooms = <?php echo json_encode($tilat); ?>;
     const courses = <?php echo json_encode($kurssit); ?>;
     const enrollments = <?php echo json_encode($ilmoittautumiset); ?>;
+
+    // Debug-tulostus konsoliin
+    console.log('Ladatut opettajat:', teachers);
+    console.log('Ladatut kurssit:', courses);
+    console.log('Ilmoittautumiset:', enrollments);
 
     /* ========= Alkuperäinen kuukausikalenteri ========= */
     const monthYearEl = document.getElementById('month-year');
@@ -202,12 +268,18 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
 
     prevBtn.addEventListener('click', () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
+        currentCalendarDate = new Date(currentDate); // Synkronoi lukujärjestyskalenterin
         renderCalendar(currentDate);
+        syncWeekWithCalendar();
+        loadCalendar();
     });
 
     nextBtn.addEventListener('click', () => {
         currentDate.setMonth(currentDate.getMonth() + 1);
+        currentCalendarDate = new Date(currentDate); // Synkronoi lukujärjestyskalenterin
         renderCalendar(currentDate);
+        syncWeekWithCalendar();
+        loadCalendar();
     });
 
     renderCalendar(currentDate);
@@ -229,6 +301,42 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
             return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
         }
 
+        getWeekFromCalendar(calendarDate) {
+            // Laskee viikon numeron kalenterin päivämäärän perusteella
+            return this.getWeekNumber(calendarDate);
+        }
+
+        getWeekBounds(weekNumber, year) {
+            // Palauttaa viikon ensimmäisen ja viimeisen päivän
+            const jan1 = new Date(Date.UTC(year, 0, 1));
+            const jan1DayOfWeek = jan1.getUTCDay() || 7;
+            
+            // Ensimmäisen viikon maanantai
+            const firstMonday = new Date(jan1);
+            firstMonday.setUTCDate(jan1.getUTCDate() + (8 - jan1DayOfWeek));
+            
+            // Halutun viikon maanantai
+            const weekStart = new Date(firstMonday);
+            weekStart.setUTCDate(firstMonday.getUTCDate() + (weekNumber - 1) * 7);
+            
+            // Viikon perjantai
+            const weekEnd = new Date(weekStart);
+            weekEnd.setUTCDate(weekStart.getUTCDate() + 4);
+            
+            return { start: weekStart, end: weekEnd };
+        }
+
+        getValidWeekRange(currentDate) {
+            const year = currentDate.getFullYear();
+            const jan1 = new Date(year, 0, 1);
+            const dec31 = new Date(year, 11, 31);
+            
+            const firstWeek = this.getWeekNumber(jan1);
+            const lastWeek = this.getWeekNumber(dec31);
+            
+            return { min: Math.max(1, firstWeek), max: Math.min(53, lastWeek) };
+        }
+
         isCourseActive(course, weekNumber) {
             const startDate = new Date(course.Alkupaiva);
             const endDate = new Date(course.Loppupaiva);
@@ -236,7 +344,12 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
             const startWeek = this.getWeekNumber(startDate);
             const endWeek = this.getWeekNumber(endDate);
             
-            return weekNumber >= startWeek && weekNumber <= endWeek;
+            // Muutettu: Jos kurssi on päättynyt tai ei ole vielä alkanut, 
+            // näytetään se silti jos se on lähellä nykyistä viikkoa (±10 viikkoa)
+            const isInPeriod = weekNumber >= startWeek && weekNumber <= endWeek;
+            const isNearCurrent = Math.abs(weekNumber - startWeek) <= 10 || Math.abs(weekNumber - endWeek) <= 10;
+            
+            return isInPeriod || isNearCurrent;
         }
 
         generateRandomSchedule(courseList, weekNumber) {
@@ -247,10 +360,17 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
                 schedule[time] = { 1: [], 2: [], 3: [], 4: [], 5: [] };
             }
             
+            // Debug: tulosta kurssit konsoliin
+            console.log(`Generoidaan lukujärjestys viikolle ${weekNumber}:`, courseList);
+            
             // Lisää kurssit satunnaisesti
             courseList.forEach(course => {
-                if (!this.isCourseActive(course, weekNumber)) return;
+                if (!this.isCourseActive(course, weekNumber)) {
+                    console.log(`Kurssi ${course.Nimi} ei ole aktiivinen viikolla ${weekNumber}`);
+                    return;
+                }
                 
+                console.log(`Lisätään kurssi: ${course.Nimi}`);
                 const sessionsPerWeek = Math.floor(Math.random() * 3) + 1;
                 const usedSlots = new Set();
                 
@@ -258,22 +378,25 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
                     let attempts = 0;
                     let placed = false;
                     
-                    while (!placed && attempts < 20) {
+                    while (!placed && attempts < 50) { // Nostettu yritysten määrää
                         const timeSlot = this.timeSlots[Math.floor(Math.random() * this.timeSlots.length)];
                         const day = Math.floor(Math.random() * 5) + 1;
                         const slotKey = `${timeSlot}-${day}`;
                         
-                        if (!usedSlots.has(slotKey)) {
-                            schedule[timeSlot][day].push({
-                                courseId: course.Tunnus,
-                                name: course.Nimi,
-                                room: course.TilaNimi || 'Ei tilaa',
-                                teacher: `${course.Etunimi} ${course.Sukunimi}` || 'Ei opettajaa'
-                            });
-                            usedSlots.add(slotKey);
-                            placed = true;
-                        }
+                        // Sallitaan päällekkäisyydet - ei tarkisteta usedSlots
+                        schedule[timeSlot][day].push({
+                            courseId: course.Tunnus,
+                            name: course.Nimi,
+                            room: course.TilaNimi || 'Ei tilaa',
+                            teacher: `${course.Etunimi || ''} ${course.Sukunimi || ''}`.trim() || 'Ei opettajaa'
+                        });
+                        placed = true;
+                        
                         attempts++;
+                    }
+                    
+                    if (!placed) {
+                        console.log(`Ei voitu sijoittaa kurssia ${course.Nimi} sessiota ${session + 1}`);
                     }
                 }
             });
@@ -310,6 +433,7 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
     // UI-elementit
     const typeEl = document.getElementById("calendar-type");
     const personEl = document.getElementById("calendar-person");
+    const searchEl = document.getElementById("person-search");
     const tableEl = document.getElementById("lukkaritaulukko");
     const currentWeekEl = document.getElementById("current-week");
     const prevWeekBtn = document.getElementById("prev-week");
@@ -318,26 +442,90 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
     // Globaalit muuttujat
     let generator = new ScheduleGenerator();
     let currentWeek = generator.currentWeek;
+    let currentCalendarDate = new Date(); // Seurataan myös kuukausikalenterin päivää
     let currentType = 'teacher';
     let currentPersonId = null;
+    let allPersons = []; // Kaikki henkilöt hakua varten
 
-    function fillPersons(type) {
+    // Synkronoi viikko kuukausikalenterin kanssa
+    function syncWeekWithCalendar() {
+        currentWeek = generator.getWeekFromCalendar(currentCalendarDate);
+        const weekRange = generator.getValidWeekRange(currentCalendarDate);
+        
+        // Varmista että viikko on vuoden rajoissa
+        if (currentWeek < weekRange.min) {
+            currentWeek = weekRange.min;
+        } else if (currentWeek > weekRange.max) {
+            currentWeek = weekRange.max;
+        }
+        
+        updateWeekDisplay();
+    }
+
+    function searchPersons(searchTerm, type) {
+        if (!searchTerm.trim()) {
+            return allPersons; // Palauta kaikki jos haku tyhjä
+        }
+
+        const searchParts = searchTerm.trim().split(/\s+/);
+        
+        return allPersons.filter(person => {
+            if (searchParts.length === 1) {
+                // Yksi sana - hae ID:llä tai nimellä
+                const singleTerm = searchParts[0].toLowerCase();
+                const id = type === 'teacher' ? person.Tunnusnumero : 
+                          type === 'student' ? person.Opiskelijanumero : person.Tunnus;
+                const firstName = person.Etunimi ? person.Etunimi.toLowerCase() : '';
+                const lastName = person.Sukunimi ? person.Sukunimi.toLowerCase() : '';
+                const roomName = person.Nimi ? person.Nimi.toLowerCase() : '';
+                
+                return id.toString().includes(singleTerm) || 
+                       firstName.includes(singleTerm) || 
+                       lastName.includes(singleTerm) ||
+                       roomName.includes(singleTerm);
+            } else {
+                // Useampi sana - hae etu- ja sukunimellä
+                const firstTerm = searchParts[0].toLowerCase();
+                const lastTerm = searchParts[1].toLowerCase();
+                const firstName = person.Etunimi ? person.Etunimi.toLowerCase() : '';
+                const lastName = person.Sukunimi ? person.Sukunimi.toLowerCase() : '';
+                
+                return firstName.includes(firstTerm) && lastName.includes(lastTerm);
+            }
+        });
+    }
+
+    function fillPersons(type, searchTerm = '') {
         personEl.innerHTML = "";
-        let data = [];
         
         switch (type) {
             case 'teacher':
-                data = teachers;
+                allPersons = teachers;
+                searchEl.placeholder = "Hae opettajaa nimellä tai ID:llä...";
                 break;
             case 'student':
-                data = students;
+                allPersons = students;
+                searchEl.placeholder = "Hae opiskelijaa nimellä tai ID:llä...";
                 break;
             case 'room':
-                data = rooms;
+                allPersons = rooms;
+                searchEl.placeholder = "Hae tilaa nimellä tai ID:llä...";
                 break;
         }
 
-        data.forEach(item => {
+        const filteredPersons = searchPersons(searchTerm, type);
+
+        if (filteredPersons.length === 0 && searchTerm.trim()) {
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = "Ei tuloksia";
+            option.disabled = true;
+            personEl.appendChild(option);
+            currentPersonId = null;
+            return;
+        }
+
+        filteredPersons.forEach(item => {
             const option = document.createElement("option");
             if (type === 'teacher') {
                 option.value = item.Tunnusnumero;
@@ -352,7 +540,12 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
             personEl.appendChild(option);
         });
 
-        currentPersonId = personEl.value;
+        // Aseta ensimmäinen henkilö valituksi jos löytyy
+        if (filteredPersons.length > 0) {
+            currentPersonId = personEl.value;
+        } else {
+            currentPersonId = null;
+        }
     }
 
     function loadCalendar() {
@@ -425,7 +618,8 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
     }
 
     function updateWeekDisplay() {
-        currentWeekEl.textContent = `Viikko ${currentWeek}`;
+        const year = currentCalendarDate.getFullYear();
+        currentWeekEl.textContent = `Viikko ${currentWeek}/${year}`;
     }
 
     function highlightToday() {
@@ -445,6 +639,7 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
     // Event listenerit
     typeEl.addEventListener("change", e => {
         currentType = e.target.value;
+        searchEl.value = ''; // Tyhjennä haku kun vaihdetaan tyyppiä
         fillPersons(currentType);
         loadCalendar();
     });
@@ -454,21 +649,62 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
         loadCalendar();
     });
 
+    // Hakukenttä - päivitä tuloksia kun käyttäjä kirjoittaa
+    searchEl.addEventListener("input", e => {
+        const searchTerm = e.target.value;
+        fillPersons(currentType, searchTerm);
+        if (currentPersonId) {
+            loadCalendar();
+        }
+    });
+
+    // Enter-näppäin hakukentässä
+    searchEl.addEventListener("keypress", e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (personEl.options.length > 0 && !personEl.options[0].disabled) {
+                personEl.selectedIndex = 0;
+                currentPersonId = personEl.value;
+                loadCalendar();
+            }
+        }
+    });
+
     prevWeekBtn.addEventListener("click", () => {
-        currentWeek--;
+        const currentYear = currentCalendarDate.getFullYear();
+        const weekRange = generator.getValidWeekRange(currentCalendarDate);
+        
+        if (currentWeek > weekRange.min) {
+            currentWeek--;
+        } else {
+            // Siirrytään edelliseen vuoteen
+            currentCalendarDate.setFullYear(currentYear - 1);
+            currentWeek = 52; // Useimmissa vuosissa viimeinen viikko
+        }
+        
         updateWeekDisplay();
         loadCalendar();
     });
 
     nextWeekBtn.addEventListener("click", () => {
-        currentWeek++;
+        const currentYear = currentCalendarDate.getFullYear();
+        const weekRange = generator.getValidWeekRange(currentCalendarDate);
+        
+        if (currentWeek < weekRange.max) {
+            currentWeek++;
+        } else {
+            // Siirrytään seuraavaan vuoteen
+            currentCalendarDate.setFullYear(currentYear + 1);
+            currentWeek = 1; // Ensimmäinen viikko
+        }
+        
         updateWeekDisplay();
         loadCalendar();
     });
 
     // Alustus
     fillPersons(currentType);
-    updateWeekDisplay();
+    syncWeekWithCalendar(); // Synkronoi aluksi
     loadCalendar();
     </script>
 </body>
