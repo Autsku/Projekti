@@ -131,7 +131,12 @@ include 'yhteys.php';
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th><th>Etunimi</th><th>Sukunimi</th><th>Aine</th><th>Toiminnot</th>
+                        <th>ID</th>
+                        <th>Etunimi</th>
+                        <th>Sukunimi</th>
+                        <th>Aine</th>
+                        <th>Kurssit</th> <!-- uusi sarake -->
+                        <th>Toiminnot</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -142,8 +147,10 @@ include 'yhteys.php';
                         $searchParts = preg_split('/\s+/', $search);
 
                         if (count($searchParts) === 1) {
-                            // Yksi sana - haetaan ID:llä tai etu- tai sukunimellä
-                            $sql = "SELECT * FROM opettajat WHERE Tunnusnumero = :search OR Etunimi LIKE :like_search OR Sukunimi LIKE :like_search";
+                            $sql = "SELECT * FROM opettajat 
+                                    WHERE Tunnusnumero = :search 
+                                    OR Etunimi LIKE :like_search 
+                                    OR Sukunimi LIKE :like_search";
                             $stmt = $yhteys->prepare($sql);
                             $stmt->execute([
                                 ':search' => $search,
@@ -151,10 +158,11 @@ include 'yhteys.php';
                             ]);
                             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         } else {
-                            // Useampi sana - haetaan etu- ja sukunimellä
                             $firstName = $searchParts[0];
                             $lastName = $searchParts[1];
-                            $sql = "SELECT * FROM opettajat WHERE Etunimi LIKE :firstname AND Sukunimi LIKE :lastname";
+                            $sql = "SELECT * FROM opettajat 
+                                    WHERE Etunimi LIKE :firstname 
+                                    AND Sukunimi LIKE :lastname";
                             $stmt = $yhteys->prepare($sql);
                             $stmt->execute([
                                 ':firstname' => '%' . $firstName . '%',
@@ -166,12 +174,22 @@ include 'yhteys.php';
                         $sql = "SELECT * FROM opettajat ORDER BY Tunnusnumero";
                         $result = $yhteys->query($sql)->fetchAll(PDO::FETCH_ASSOC);
                     }
+
                     foreach($result as $row) {
+                        // hae kaikki kurssit mitä tämä opettaja opettaa
+                        $kurssiStmt = $yhteys->prepare("SELECT Nimi FROM kurssit WHERE Opettaja = :id");
+                        $kurssiStmt->execute([':id' => $row['Tunnusnumero']]);
+                        $kurssit = $kurssiStmt->fetchAll(PDO::FETCH_COLUMN);
+
+                        // jos kursseja ei ole, näytetään "Ei kursseja"
+                        $kurssiLista = $kurssit ? implode(", ", array_map('htmlspecialchars', $kurssit)) : "Ei kursseja";
+
                         echo "<tr>
                             <td>{$row['Tunnusnumero']}</td>
                             <td>".htmlspecialchars($row['Etunimi'])."</td>
                             <td>".htmlspecialchars($row['Sukunimi'])."</td>
                             <td>".htmlspecialchars($row['Aine'])."</td>
+                            <td>{$kurssiLista}</td>
                             <td>
                                 <a class='update-button' href='update.php?table=opettajat&id={$row['Tunnusnumero']}'>Update</a>
                                 <a class='delete-button' href='delete.php?table=opettajat&id={$row['Tunnusnumero']}'>Delete</a>
@@ -181,6 +199,7 @@ include 'yhteys.php';
                     ?>
                 </tbody>
             </table>
+
         </div>
 
         <!-- Hallinta: Kurssit osio -->
