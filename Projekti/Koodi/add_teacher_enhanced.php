@@ -181,7 +181,7 @@ $rooms = $yhteys->query("SELECT Tunnus, Nimi FROM tilat")->fetchAll(PDO::FETCH_A
             
             <!-- New courses section -->
             <div class="course-section">
-                <h4>➕ Luo uusia kursseja</h4>
+                <h4>Luo uusia kursseja</h4>
                 <p>Voit luoda samalla uusia kursseja tälle opettajalle:</p>
                 
                 <button type="button" class="btn-add-course" onclick="addNewCourseForm()">
@@ -220,7 +220,7 @@ $rooms = $yhteys->query("SELECT Tunnus, Nimi FROM tilat")->fetchAll(PDO::FETCH_A
             
             courseForm.innerHTML = `
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h6>🆕 Uusi kurssi #${courseCounter}</h6>
+                    <h6>Uusi kurssi #${courseCounter}</h6>
                     <button type="button" class="btn-remove-course" onclick="removeCourseForm(${courseCounter})">
                         Poista
                     </button>
