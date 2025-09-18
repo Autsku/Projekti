@@ -1,3 +1,18 @@
+<?php
+include 'yhteys.php';
+
+// Hae kaikki tarvittavat tiedot tietokannasta
+$opettajat = $yhteys->query("SELECT * FROM opettajat ORDER BY Etunimi, Sukunimi")->fetchAll(PDO::FETCH_ASSOC);
+$opiskelijat = $yhteys->query("SELECT * FROM opiskelijat ORDER BY Etunimi, Sukunimi")->fetchAll(PDO::FETCH_ASSOC);
+$tilat = $yhteys->query("SELECT * FROM tilat ORDER BY Nimi")->fetchAll(PDO::FETCH_ASSOC);
+$kurssit = $yhteys->query("SELECT k.*, o.Etunimi, o.Sukunimi, t.Nimi as TilaNimi 
+                          FROM kurssit k 
+                          LEFT JOIN opettajat o ON k.Opettaja = o.Tunnusnumero 
+                          LEFT JOIN tilat t ON k.Tila = t.Tunnus")->fetchAll(PDO::FETCH_ASSOC);
+
+// Hae kurssi-ilmoittautumiset
+$ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAll(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="fi">
 <head>
@@ -23,7 +38,7 @@
         <p>Oppi on oppilaitoksen kurssienhallintajärjestelmä, jossa voit hallita opiskelijoita, opettajia, kursseja, tiloja ja ilmoittautumisia.</p>
     </section>
 
-    <!-- 📌 NEW LUKKARI SECTION -->
+    <!-- Lukkari-osio -->
     <section class="lukkari">
         <div class="lukkari-header">
             <h2>Viikon lukkari</h2>
@@ -36,10 +51,19 @@
                 </select>
 
                 <select id="calendar-person"></select>
+
+                <!-- Viikkonavigointi -->
+                <div class="week-navigation">
+                    <button id="prev-week" class="week-nav-btn">◀ Edellinen</button>
+                    <span id="current-week" class="week-info">Viikko 38</span>
+                    <button id="next-week" class="week-nav-btn">Seuraava ▶</button>
+                </div>
             </div>
         </div>
 
-        <table class="lukkaritaulukko" id="lukkaritaulukko"></table>
+        <table class="lukkaritaulukko" id="lukkaritaulukko">
+            <!-- Taulukko täytetään JavaScriptillä -->
+        </table>
     </section>
 
     <div class="content">
@@ -109,7 +133,14 @@
     </div>
 
     <script>
-    /* ========= EXISTING CALENDAR JS ========= */
+    // Tietokannan data PHP:sta JavaScriptiin
+    const teachers = <?php echo json_encode($opettajat); ?>;
+    const students = <?php echo json_encode($opiskelijat); ?>;
+    const rooms = <?php echo json_encode($tilat); ?>;
+    const courses = <?php echo json_encode($kurssit); ?>;
+    const enrollments = <?php echo json_encode($ilmoittautumiset); ?>;
+
+    /* ========= Alkuperäinen kuukausikalenteri ========= */
     const monthYearEl = document.getElementById('month-year');
     const calendarDatesEl = document.getElementById('calendar-dates');
     const prevBtn = document.getElementById('prev-month');
@@ -181,110 +212,220 @@
 
     renderCalendar(currentDate);
 
-    /* ========= NEW LUKKARI JS ========= */
-    const schedules = {
-        teacher: {
-            "topi": {
-                title: "Opettaja Topi Topilainen – Viikko 38",
-                table: `
-                    <thead>
-                        <tr>
-                            <th>Aika</th>
-                            <th data-day="1">Ma</th>
-                            <th data-day="2">Ti</th>
-                            <th data-day="3">Ke</th>
-                            <th data-day="4">To</th>
-                            <th data-day="5">Pe</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>9.00</td>
-                            <td class="kurssi" rowspan="2">Rakenteinen ohjelmointi 1</td>
-                            <td></td>
-                            <td class="kurssi" rowspan="2">Rakenteinen ohjelmointi 1</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                `
-            }
-        },
-        student: {
-            "mari": {
-                title: "Opiskelija Mari Meikäläinen – Viikko 38",
-                table: `
-                    <thead>
-                        <tr>
-                            <th>Aika</th>
-                            <th data-day="1">Ma</th>
-                            <th data-day="2">Ti</th>
-                            <th data-day="3">Ke</th>
-                            <th data-day="4">To</th>
-                            <th data-day="5">Pe</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>9.00</td>
-                            <td></td>
-                            <td class="kurssi">Englanti</td>
-                            <td></td>
-                            <td></td>
-                            <td class="kurssi">Matematiikka</td>
-                        </tr>
-                    </tbody>
-                `
-            }
-        },
-        room: {
-            "tilaA": {
-                title: "Luokka A101 – Viikko 38",
-                table: `
-                    <thead>
-                        <tr>
-                            <th>Aika</th>
-                            <th data-day="1">Ma</th>
-                            <th data-day="2">Ti</th>
-                            <th data-day="3">Ke</th>
-                            <th data-day="4">To</th>
-                            <th data-day="5">Pe</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>9.00</td>
-                            <td class="kurssi">Käyttöliittymä</td>
-                            <td></td>
-                            <td class="kurssi">Web-ohjelmointi</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                `
-            }
+    /* ========= Lukujärjestys ========= */
+    
+    // Aikataulugeneraattori
+    class ScheduleGenerator {
+        constructor() {
+            this.timeSlots = ['8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'];
+            this.currentWeek = this.getWeekNumber(new Date());
         }
-    };
 
+        getWeekNumber(date) {
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        }
+
+        isCourseActive(course, weekNumber) {
+            const startDate = new Date(course.Alkupaiva);
+            const endDate = new Date(course.Loppupaiva);
+            
+            const startWeek = this.getWeekNumber(startDate);
+            const endWeek = this.getWeekNumber(endDate);
+            
+            return weekNumber >= startWeek && weekNumber <= endWeek;
+        }
+
+        generateRandomSchedule(courseList, weekNumber) {
+            const schedule = {};
+            
+            // Alusta aikataulu
+            for (let time of this.timeSlots) {
+                schedule[time] = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+            }
+            
+            // Lisää kurssit satunnaisesti
+            courseList.forEach(course => {
+                if (!this.isCourseActive(course, weekNumber)) return;
+                
+                const sessionsPerWeek = Math.floor(Math.random() * 3) + 1;
+                const usedSlots = new Set();
+                
+                for (let session = 0; session < sessionsPerWeek; session++) {
+                    let attempts = 0;
+                    let placed = false;
+                    
+                    while (!placed && attempts < 20) {
+                        const timeSlot = this.timeSlots[Math.floor(Math.random() * this.timeSlots.length)];
+                        const day = Math.floor(Math.random() * 5) + 1;
+                        const slotKey = `${timeSlot}-${day}`;
+                        
+                        if (!usedSlots.has(slotKey)) {
+                            schedule[timeSlot][day].push({
+                                courseId: course.Tunnus,
+                                name: course.Nimi,
+                                room: course.TilaNimi || 'Ei tilaa',
+                                teacher: `${course.Etunimi} ${course.Sukunimi}` || 'Ei opettajaa'
+                            });
+                            usedSlots.add(slotKey);
+                            placed = true;
+                        }
+                        attempts++;
+                    }
+                }
+            });
+            
+            return schedule;
+        }
+
+        getTeacherSchedule(teacherId, weekNumber) {
+            const teacherCourses = courses.filter(course => 
+                course.Opettaja == teacherId
+            );
+            return this.generateRandomSchedule(teacherCourses, weekNumber);
+        }
+
+        getStudentSchedule(studentId, weekNumber) {
+            // Hae opiskelijan kurssit ilmoittautumisten perusteella
+            const studentEnrollments = enrollments.filter(enrollment => 
+                enrollment.Opiskelija == studentId
+            );
+            const studentCourses = courses.filter(course => 
+                studentEnrollments.some(enrollment => enrollment.Kurssi == course.Tunnus)
+            );
+            return this.generateRandomSchedule(studentCourses, weekNumber);
+        }
+
+        getRoomSchedule(roomId, weekNumber) {
+            const roomCourses = courses.filter(course => 
+                course.Tila == roomId
+            );
+            return this.generateRandomSchedule(roomCourses, weekNumber);
+        }
+    }
+
+    // UI-elementit
     const typeEl = document.getElementById("calendar-type");
     const personEl = document.getElementById("calendar-person");
     const tableEl = document.getElementById("lukkaritaulukko");
+    const currentWeekEl = document.getElementById("current-week");
+    const prevWeekBtn = document.getElementById("prev-week");
+    const nextWeekBtn = document.getElementById("next-week");
+
+    // Globaalit muuttujat
+    let generator = new ScheduleGenerator();
+    let currentWeek = generator.currentWeek;
+    let currentType = 'teacher';
+    let currentPersonId = null;
 
     function fillPersons(type) {
         personEl.innerHTML = "";
-        Object.keys(schedules[type]).forEach(id => {
+        let data = [];
+        
+        switch (type) {
+            case 'teacher':
+                data = teachers;
+                break;
+            case 'student':
+                data = students;
+                break;
+            case 'room':
+                data = rooms;
+                break;
+        }
+
+        data.forEach(item => {
             const option = document.createElement("option");
-            option.value = id;
-            option.textContent = schedules[type][id].title.split(" – ")[0];
+            if (type === 'teacher') {
+                option.value = item.Tunnusnumero;
+                option.textContent = `${item.Etunimi} ${item.Sukunimi}`;
+            } else if (type === 'student') {
+                option.value = item.Opiskelijanumero;
+                option.textContent = `${item.Etunimi} ${item.Sukunimi}`;
+            } else if (type === 'room') {
+                option.value = item.Tunnus;
+                option.textContent = item.Nimi;
+            }
             personEl.appendChild(option);
         });
+
+        currentPersonId = personEl.value;
     }
 
-    function loadCalendar(type, id) {
-        const data = schedules[type][id];
-        document.querySelector(".lukkari h2").textContent = data.title;
-        tableEl.innerHTML = data.table;
+    function loadCalendar() {
+        if (!currentPersonId) return;
+
+        let schedule = {};
+        let title = '';
+
+        switch (currentType) {
+            case 'teacher':
+                schedule = generator.getTeacherSchedule(currentPersonId, currentWeek);
+                const teacher = teachers.find(t => t.Tunnusnumero == currentPersonId);
+                title = `${teacher.Etunimi} ${teacher.Sukunimi} – Viikko ${currentWeek}`;
+                break;
+            case 'student':
+                schedule = generator.getStudentSchedule(currentPersonId, currentWeek);
+                const student = students.find(s => s.Opiskelijanumero == currentPersonId);
+                title = `${student.Etunimi} ${student.Sukunimi} – Viikko ${currentWeek}`;
+                break;
+            case 'room':
+                schedule = generator.getRoomSchedule(currentPersonId, currentWeek);
+                const room = rooms.find(r => r.Tunnus == currentPersonId);
+                title = `${room.Nimi} – Viikko ${currentWeek}`;
+                break;
+        }
+
+        document.querySelector(".lukkari h2").textContent = title;
+        renderScheduleTable(schedule);
         highlightToday();
+    }
+
+    function renderScheduleTable(schedule) {
+        let tableHTML = `
+            <thead>
+                <tr>
+                    <th>Aika</th>
+                    <th data-day="1">Ma</th>
+                    <th data-day="2">Ti</th>
+                    <th data-day="3">Ke</th>
+                    <th data-day="4">To</th>
+                    <th data-day="5">Pe</th>
+                </tr>
+            </thead>
+            <tbody>
+        `;
+
+        generator.timeSlots.forEach(timeSlot => {
+            tableHTML += `<tr><td>${timeSlot}</td>`;
+            
+            for (let day = 1; day <= 5; day++) {
+                tableHTML += `<td data-day="${day}">`;
+                const sessions = schedule[timeSlot]?.[day] || [];
+                
+                sessions.forEach(session => {
+                    tableHTML += `
+                        <div class="kurssi" title="${session.name}\n${session.teacher}\n${session.room}">
+                            ${session.name}
+                        </div>
+                    `;
+                });
+                
+                tableHTML += `</td>`;
+            }
+            
+            tableHTML += `</tr>`;
+        });
+
+        tableHTML += `</tbody>`;
+        tableEl.innerHTML = tableHTML;
+    }
+
+    function updateWeekDisplay() {
+        currentWeekEl.textContent = `Viikko ${currentWeek}`;
     }
 
     function highlightToday() {
@@ -301,18 +442,34 @@
         }
     }
 
-    fillPersons("teacher");
-    loadCalendar("teacher", personEl.value);
-
+    // Event listenerit
     typeEl.addEventListener("change", e => {
-        const type = e.target.value;
-        fillPersons(type);
-        loadCalendar(type, personEl.value);
+        currentType = e.target.value;
+        fillPersons(currentType);
+        loadCalendar();
     });
 
     personEl.addEventListener("change", e => {
-        loadCalendar(typeEl.value, e.target.value);
+        currentPersonId = e.target.value;
+        loadCalendar();
     });
+
+    prevWeekBtn.addEventListener("click", () => {
+        currentWeek--;
+        updateWeekDisplay();
+        loadCalendar();
+    });
+
+    nextWeekBtn.addEventListener("click", () => {
+        currentWeek++;
+        updateWeekDisplay();
+        loadCalendar();
+    });
+
+    // Alustus
+    fillPersons(currentType);
+    updateWeekDisplay();
+    loadCalendar();
     </script>
 </body>
 </html>
