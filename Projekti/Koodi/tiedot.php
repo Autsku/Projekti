@@ -33,14 +33,14 @@ include 'yhteys.php';
             <div class="card" onclick="toggleSection('opettajat-section')">
                 <h1>Opettajat</h1>
                 <p>Katso opettajalistaus, muokkaa tai poista opettajia.</p>
-                <a href="add.php?table=opettajat" class="button" onclick="event.stopPropagation()">Lisää opettaja</a>
+                <a href="add_teacher_enhanced.php" class="button" onclick="event.stopPropagation()">Lisää opettaja</a>
             </div>
 
             <div class="card" onclick="toggleSection('hallinta-section')">
                 <h1>Tiedon hallinta</h1>
                 <p>Kurssit ja kirjautumiset – lisää, muokkaa, poista.</p>
                 <a href="add.php?table=kurssit" class="button" onclick="event.stopPropagation()">Lisää kurssi</a>
-                <a href="add.php?table=kurssikirjautuminen" class="button" onclick="event.stopPropagation()">Lisää kirjautuminen</a>
+                 <a href="add_students_to_course.php" class="button" onclick="event.stopPropagation()">Lisää kirjautuminen</a>
             </div>
 
         </div>

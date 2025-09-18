@@ -66,6 +66,22 @@ if ($_POST) {
     $updateFields = [];
     $updateValues = [];
     
+    // Check if ID is being changed (only for teachers)
+    $newId = null;
+    if ($table === 'opettajat' && isset($_POST[$config['id_field']]) && $_POST[$config['id_field']] != $id) {
+        $newId = $_POST[$config['id_field']];
+        
+        // Check if new ID already exists
+        $checkSql = "SELECT COUNT(*) FROM {$table} WHERE {$config['id_field']} = ? AND {$config['id_field']} != ?";
+        $checkStmt = $yhteys->prepare($checkSql);
+        $checkStmt->execute([$newId, $id]);
+        
+        if ($checkStmt->fetchColumn() > 0) {
+            echo "<div class='alert alert-danger'>Virhe: Opettajan ID {$newId} on jo käytössä!</div>";
+            exit;
+        }
+    }
+    
     foreach ($config['fields'] as $field => $fieldConfig) {
         if (isset($_POST[$field])) {
             $updateFields[] = "{$field} = ?";
@@ -73,16 +89,48 @@ if ($_POST) {
         }
     }
     
-    $updateValues[] = $id; // Add ID for WHERE clause
-    
-    $sql = "UPDATE {$table} SET " . implode(', ', $updateFields) . " WHERE {$config['id_field']} = ?";
-    $stmt = $yhteys->prepare($sql);
-    
-    if ($stmt->execute($updateValues)) {
-        echo "<div class='alert alert-success'>" . ucfirst($config['name']) . " päivitetty onnistuneesti!</div>";
-        echo "<a href='tiedot.php' class='btn btn-primary'>Takaisin listaan</a>";
+    // If ID is being changed for teachers, handle it specially
+    if ($newId && $table === 'opettajat') {
+        try {
+            $yhteys->beginTransaction();
+            
+            // First, insert new teacher record with new ID
+            $insertSql = "INSERT INTO opettajat (Tunnusnumero, " . implode(', ', array_keys($config['fields'])) . ") VALUES (?, " . str_repeat('?,', count($config['fields']) - 1) . "?)";
+            $insertValues = array_merge([$newId], $updateValues);
+            $insertStmt = $yhteys->prepare($insertSql);
+            $insertStmt->execute($insertValues);
+            
+            // Then update courses to use new teacher ID
+            $updateCoursesSql = "UPDATE kurssit SET Opettaja = ? WHERE Opettaja = ?";
+            $updateCoursesStmt = $yhteys->prepare($updateCoursesSql);
+            $updateCoursesStmt->execute([$newId, $id]);
+            
+            // Finally, delete old teacher record
+            $deleteSql = "DELETE FROM opettajat WHERE Tunnusnumero = ?";
+            $deleteStmt = $yhteys->prepare($deleteSql);
+            $deleteStmt->execute([$id]);
+            
+            $yhteys->commit();
+            
+            echo "<div class='alert alert-success'>" . ucfirst($config['name']) . " päivitetty onnistuneesti! ID muutettu {$id} → {$newId}</div>";
+            echo "<a href='tiedot.php' class='btn btn-primary'>Takaisin listaan</a>";
+        } catch (Exception $e) {
+            $yhteys->rollBack();
+            echo "<div class='alert alert-danger'>Virhe päivittäessä: " . $e->getMessage() . "</div>";
+        }
     } else {
-        echo "<div class='alert alert-danger'>Virhe päivittäessä!</div>";
+        // Normal update without ID change
+        $updateValues[] = $id; // Add ID for WHERE clause
+        
+        $sql = "UPDATE {$table} SET " . implode(', ', $updateFields) . " WHERE {$config['id_field']} = ?";
+        $stmt = $yhteys->prepare($sql);
+        
+        if ($stmt->execute($updateValues)) {
+            echo "<div class='alert alert-success'>" . ucfirst($config['name']) . " päivitetty onnistuneesti!</div>";
+            echo "<a href='tiedot.php' class='btn btn-primary'>Takaisin listaan</a>";
+        } else {
+            echo "<div class='alert alert-danger'>Virhe päivittäessä!</div>";
+        }
     }
     exit;
 }
@@ -128,7 +176,12 @@ function getSelectOptions($yhteys, $query, $selectedValue = null) {
         <form method="POST">
             <div>
                 <label class="form-label"><?= $config['id_field'] ?>:</label>
-                <input type="text" class="form-control" value="<?= $record[$config['id_field']] ?>" readonly>
+                <?php if ($table === 'opettajat'): ?>
+                    <input type="number" name="<?= $config['id_field'] ?>" class="form-control" value="<?= $record[$config['id_field']] ?>" required>
+                    <small class="text-muted">Voit muuttaa opettajan ID:tä tarvittaessa</small>
+                <?php else: ?>
+                    <input type="text" class="form-control" value="<?= $record[$config['id_field']] ?>" readonly>
+                <?php endif; ?>
             </div>
             
             <?php foreach ($config['fields'] as $field => $fieldConfig): ?>
