@@ -40,7 +40,8 @@ include 'yhteys.php';
                 <h1>Tiedon hallinta</h1>
                 <p>Kurssit ja kirjautumiset – lisää, muokkaa, poista.</p>
                 <a href="add.php?table=kurssit" class="button" onclick="event.stopPropagation()">Lisää kurssi</a>
-                 <a href="add_students_to_course.php" class="button" onclick="event.stopPropagation()">Lisää kirjautuminen</a>
+                <a href="add_students_to_course.php" class="button" onclick="event.stopPropagation()">Lisää kirjautuminen</a>
+                <a href="add_room.php" class="button" onclick="event.stopPropagation()">Lisää tila</a>
             </div>
 
         </div>
