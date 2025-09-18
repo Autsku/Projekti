@@ -23,6 +23,71 @@
         <p>Oppi on oppilaitoksen kurssienhallintajärjestelmä, jossa voit hallita opiskelijoita, opettajia, kursseja, tiloja ja ilmoittautumisia.</p>
     </section>
 
+    <!-- Lukkari -->
+    <section class="lukkari">
+        <h2>Opettaja Topi Topilainen – Viikko 48</h2>
+        <table class="lukkaritaulukko">
+            <thead>
+                <tr>
+                    <th>Aika</th>
+                    <th>Ma 25.11.</th>
+                    <th>Ti 26.11.</th>
+                    <th>Ke 27.11.</th>
+                    <th>To 28.11.</th>
+                    <th>Pe 29.11.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>9.00</td>
+                    <td rowspan="2" class="kurssi">Rakenteinen ohjelmointi 1</td>
+                    <td></td>
+                    <td rowspan="2" class="kurssi">Rakenteinen ohjelmointi 1</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>10.00</td>
+                    <td rowspan="2" class="kurssi">Käyttöliittymäsuunnittelu</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>11.00</td>
+                    <td></td>
+                    <td rowspan="2" class="kurssi">Rakenteinen ohjelmointi 1</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>12.00</td>
+                    <td></td>
+                    <td></td>
+                    <td rowspan="2" class="kurssi">Käyttöliittymäsuunnittelu</td>
+                </tr>
+                <tr>
+                    <td>13.00</td>
+                    <td></td>
+                    <td></td>
+                    <td rowspan="2" class="kurssi">Tietoturvallinen ohjelmointi</td>
+                </tr>
+                <tr>
+                    <td>14.00</td>
+                    <td></td>
+                    <td rowspan="2" class="kurssi">Web-ohjelmointi</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>15.00</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
     <div class="content">
         <div class="left-column">
             <section class="card">
@@ -50,8 +115,7 @@
                 <span id="month-year">Syyskuu 2025</span>
                 <button id="next-month">▶</button>
             </div>
-            <div class="calendar-dates" id="calendar-dates">
-            </div>
+            <div class="calendar-dates" id="calendar-dates"></div>
         </section>
     </div>
 
@@ -109,7 +173,6 @@
 
             monthYearEl.textContent = `${months[month]} ${year}`;
 
-            // Create day names header
             const dayNamesDiv = document.createElement('div');
             dayNamesDiv.className = 'day-names';
             
@@ -122,16 +185,14 @@
             
             calendarDatesEl.appendChild(dayNamesDiv);
 
-            // Create dates grid
             const datesGrid = document.createElement('div');
             datesGrid.className = 'dates-grid';
 
             const firstDay = new Date(year, month, 1);
             const lastDay = new Date(year, month + 1, 0);
             const daysInMonth = lastDay.getDate();
-            const startingDay = firstDay.getDay(); // 0 = Sunday
+            const startingDay = firstDay.getDay();
 
-            // Previous month's trailing dates
             const prevMonth = new Date(year, month, 0);
             const prevMonthDays = prevMonth.getDate();
             
@@ -142,14 +203,12 @@
                 datesGrid.appendChild(dateDiv);
             }
 
-            // Current month dates
             const today = new Date();
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateDiv = document.createElement('div');
                 dateDiv.className = 'date-cell';
                 dateDiv.textContent = day;
 
-                // Highlight today
                 if (
                     day === today.getDate() &&
                     month === today.getMonth() &&
@@ -161,9 +220,8 @@
                 datesGrid.appendChild(dateDiv);
             }
 
-            // Next month's leading dates
             const totalCells = datesGrid.children.length;
-            const remainingCells = 42 - totalCells; // 6 rows × 7 days = 42 cells
+            const remainingCells = 42 - totalCells;
             
             for (let day = 1; day <= remainingCells && remainingCells < 7; day++) {
                 const dateDiv = document.createElement('div');
@@ -185,7 +243,6 @@
             renderCalendar(currentDate);
         });
 
-        // Initial render
         renderCalendar(currentDate);
     </script>
 </body>
