@@ -308,6 +308,9 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
             // Debug: tulosta kurssit konsoliin
             console.log(`Generoidaan lukujärjestys viikolle ${weekNumber}:`, courseList);
             
+            // Seuraa käytettyjä aikaslotteja päällekkäisyyksien estämiseksi
+            const usedSlots = new Set();
+            
             // Lisää kurssit satunnaisesti
             courseList.forEach(course => {
                 if (!this.isCourseActive(course, weekNumber)) {
@@ -317,31 +320,35 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
                 
                 console.log(`Lisätään kurssi: ${course.Nimi}`);
                 const sessionsPerWeek = Math.floor(Math.random() * 3) + 1;
-                const usedSlots = new Set();
                 
                 for (let session = 0; session < sessionsPerWeek; session++) {
                     let attempts = 0;
                     let placed = false;
                     
-                    while (!placed && attempts < 50) { // Nostettu yritysten määrää
+                    while (!placed && attempts < 50) {
                         const timeSlot = this.timeSlots[Math.floor(Math.random() * this.timeSlots.length)];
                         const day = Math.floor(Math.random() * 5) + 1;
                         const slotKey = `${timeSlot}-${day}`;
                         
-                        // Sallitaan päällekkäisyydet - ei tarkisteta usedSlots
-                        schedule[timeSlot][day].push({
-                            courseId: course.Tunnus,
-                            name: course.Nimi,
-                            room: course.TilaNimi || 'Ei tilaa',
-                            teacher: `${course.Etunimi || ''} ${course.Sukunimi || ''}`.trim() || 'Ei opettajaa'
-                        });
-                        placed = true;
+                        // Tarkista että aikaslotti ei ole jo käytössä
+                        if (!usedSlots.has(slotKey)) {
+                            schedule[timeSlot][day].push({
+                                courseId: course.Tunnus,
+                                name: course.Nimi,
+                                room: course.TilaNimi || 'Ei tilaa',
+                                teacher: `${course.Etunimi || ''} ${course.Sukunimi || ''}`.trim() || 'Ei opettajaa'
+                            });
+                            
+                            // Merkitse aikaslotti käytetyksi
+                            usedSlots.add(slotKey);
+                            placed = true;
+                        }
                         
                         attempts++;
                     }
                     
                     if (!placed) {
-                        console.log(`Ei voitu sijoittaa kurssia ${course.Nimi} sessiota ${session + 1}`);
+                        console.log(`Ei voitu sijoittaa kurssia ${course.Nimi} sessiota ${session + 1} - kaikki ajat varattuja`);
                     }
                 }
             });

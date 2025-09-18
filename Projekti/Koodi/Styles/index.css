@@ -325,8 +325,8 @@ html, body {
     font-size: 1rem;
     border: 2px solid var(--primary);
     border-radius: 6px;
-    color: var(--primary);
-    background-color: white;
+    color: white;
+    background-color: var(--primary);
     cursor: pointer;
     transition: 0.18s ease;
 }
@@ -334,7 +334,7 @@ html, body {
 /* hover effect */
 .calendar-chooser select:hover,
 .lukkari-header select:hover {
-    background-color: var(--primary);
+    background-color: var(--primary-dark);
     color: white;
 }
 
