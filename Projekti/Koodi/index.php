@@ -45,9 +45,9 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
 
             <div class="calendar-chooser">
                 <select id="calendar-type">
-                    <option value="teacher">👨‍🏫 Opettajat</option>
-                    <option value="student">👨‍🎓 Opiskelijat</option>
-                    <option value="room">🏫 Tilat</option>
+                    <option value="teacher">Opettajat </option>
+                    <option value="student">Opiskelijat </option>
+                    <option value="room">Tilat </option>
                 </select>
 
                 <!-- Hakukenttä -->
@@ -137,61 +137,6 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
         </div>
     </div>
 
-    <style>
-        /* Lisätyylit viikkonavigointiin ja hakuun */
-        .search-container {
-            margin: 0 0.5rem;
-        }
-        
-        .week-navigation {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            margin-left: 1rem;
-        }
-        
-        .week-nav-btn {
-            padding: 0.5rem 1rem;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background 0.3s;
-        }
-        
-        .week-nav-btn:hover {
-            background: #5a67d8;
-        }
-        
-        .week-info {
-            padding: 0.5rem 1rem;
-            font-weight: bold;
-            color: #667eea;
-            font-size: 0.9rem;
-        }
-        
-        @media (max-width: 768px) {
-            .calendar-chooser {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .week-navigation {
-                margin-left: 0;
-                justify-content: center;
-            }
-            
-            .search-container {
-                margin: 0;
-            }
-            
-            #person-search {
-                width: 100% !important;
-            }
-        }
-    </style>
 
     <script>
     // Tietokannan data PHP:sta JavaScriptiin
@@ -625,14 +570,9 @@ $ilmoittautumiset = $yhteys->query("SELECT * FROM kurssikirjautuminen")->fetchAl
     function highlightToday() {
         const today = new Date().getDay();
         if (today >= 1 && today <= 5) {
-            const headers = tableEl.querySelectorAll(`th[data-day="${today}"]`);
-            if (headers.length > 0) {
-                const colIndex = Array.from(headers[0].parentNode.children).indexOf(headers[0]);
-                tableEl.querySelectorAll("tr").forEach(row => {
-                    const cell = row.children[colIndex];
-                    if (cell) cell.classList.add("highlight");
-                });
-            }
+            // Korostetaan vain tbody-soluissa, ei thead-otsikoissa
+            const bodyCells = tableEl.querySelectorAll(`tbody td[data-day="${today}"]`);
+            bodyCells.forEach(cell => cell.classList.add("highlight"));
         }
     }
 

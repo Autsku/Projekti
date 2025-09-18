@@ -35,7 +35,6 @@ html, body {
     border-bottom: 0.3rem solid rgb(5, 54, 73);
 }
 
-
 .header a:hover {
     background-color: rgb(5, 54, 73);
     color: white;
@@ -45,15 +44,11 @@ html, body {
 .header a {
     padding: 10px 15px; 
     transition: all 0.3s ease;
-}
-
-.header a {
     margin: 0;
     color: rgb(5, 54, 73);
     text-decoration: none;
     font-size: 1.3rem;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    transition: all 0.3s ease;
 }
 
 .header .logo{
@@ -296,6 +291,7 @@ html, body {
     padding: 18px;
     border-radius: 10px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    overflow-x: auto;
 }
 
 /* Header inside lukkari with chooser */
@@ -396,9 +392,54 @@ html, body {
     vertical-align: middle;
 }
 
-/* responsive table container: allow scroll on small screens */
-.lukkari {
-    overflow-x: auto;
+/* Lukujärjestyksen viikkonavigointi ja haku */
+.search-container {
+    margin: 0 0.5rem;
+}
+
+.week-navigation {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.week-nav-btn {
+    padding: 6px 10px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+.week-nav-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+.week-info {
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    color: var(--primary);
+    font-size: 0.9rem;
+}
+
+/* Hakukenttä sama tyyli kuin selectit */
+#person-search {
+    padding: 6px 10px;
+    font-size: 1rem;
+    border: 2px solid var(--primary);
+    border-radius: 6px;
+    color: var(--primary);
+    background-color: white;
+    transition: 0.18s ease;
+}
+
+#person-search:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(5,54,73,0.08);
 }
 
 /* =========================
@@ -430,6 +471,20 @@ html, body {
     .header .items {
         display: none; /* keep header compact on small screens (you can change) */
     }
+
+    .calendar-chooser {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .week-navigation {
+        margin-left: 0;
+        justify-content: center;
+    }
+    
+    .search-container {
+        margin: 0;
+    }
 }
 
 @media (max-width: 600px) {
@@ -452,6 +507,9 @@ html, body {
     .calendar-chooser select {
         flex: 1 1 auto;
     }
+    #person-search {
+        width: 100%;
+    }
 }
 
 /* small visual polish for interactive elements */
@@ -462,45 +520,3 @@ button, select {
 }
 
 /* End of file */
-
-
-        .week-navigation {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            margin-left: 1rem;
-        }
-        
-        .week-nav-btn {
-            padding: 0.5rem 1rem;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background 0.3s;
-        }
-        
-        .week-nav-btn:hover {
-            background: #5a67d8;
-        }
-        
-        .week-info {
-            padding: 0.5rem 1rem;
-            font-weight: bold;
-            color: #667eea;
-            font-size: 0.9rem;
-        }
-        
-        @media (max-width: 768px) {
-            .calendar-chooser {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .week-navigation {
-                margin-left: 0;
-                justify-content: center;
-            }
-        }
